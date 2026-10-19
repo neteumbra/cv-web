@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="cv-web — Instrucciones para IA">
+  <div class="container">
+    <h1 data-i18n="ai.title">Instrucciones para IA</h1>
+    <p data-i18n="ai.desc">
+      ¿Tienes tu CV en Word, PDF, LinkedIn o en texto? Copia este prompt y pégaselo a tu IA favorita
+      junto con tu CV: te lo devolverá en el formato exacto que este editor entiende.
+    </p>
+
+    <div class="actions" style="justify-content:flex-start; margin:18px 0;">
+      <button id="copy-prompt" class="btn-primary" data-i18n="ai.copy">Copiar prompt</button>
+      <span id="copy-status" style="color:#3fb950; font-weight:600; align-self:center;"></span>
+    </div>
+
+    <pre id="prompt" class="prompt" data-i18n="ai.prompt"></pre>
+  </div>
+
+  <script>
+    const btn = document.getElementById('copy-prompt');
+    const status = document.getElementById('copy-status');
+    btn?.addEventListener('click', async () => {
+      const text = document.getElementById('prompt')?.textContent ?? '';
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        // Fallback: seleccionar el texto si el portapapeles no está disponible
+        const range = document.createRange();
+        const el = document.getElementById('prompt');
+        if (el) {
+          range.selectNodeContents(el);
+          const sel = window.getSelection();
+          sel?.removeAllRanges();
+          sel?.addRange(range);
+        }
+      }
+      if (status) {
+        status.textContent = document.documentElement.lang === 'en' ? 'Copied!' : '¡Copiado!';
+        window.setTimeout(() => {
+          if (status) status.textContent = '';
+        }, 1600);
+      }
+    });
+  </script>
+</Layout>

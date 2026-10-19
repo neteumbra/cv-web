@@ -1,13 +1,63 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Toolbar from '../components/Toolbar.tsx';
-import Editor from '../components/Editor.tsx';
-import PdfPreview from '../components/PdfPreview.tsx';
+const base = import.meta.env.BASE_URL;
 ---
-<Layout>
-  <Toolbar client:only="react" />
-  <main class="split">
-    <Editor client:only="react" />
-    <PdfPreview client:only="react" />
-  </main>
+<Layout title="cv-web — Tu CV en Markdown con PDF al instante">
+  <div class="container">
+    <section class="hero">
+      <span class="badge">100% open source · GPL-3.0</span>
+      <h1 data-i18n="landing.hero.title">Tu CV en Markdown, con PDF al instante</h1>
+      <p data-i18n="landing.hero.sub">
+        Escribe tu CV en markdown a la izquierda y mira el PDF renderizándose en tiempo real a la derecha.
+        Todo ocurre en tu navegador: sin servidores, sin base de datos, sin que nada salga de tu equipo.
+      </p>
+      <div class="actions">
+        <a class="btn-primary" href={`${base}/editor/`} data-i18n="landing.cta">Abrir el editor</a>
+        <a class="btn-ghost" href={`${base}/ai/`} data-i18n="landing.cta.ai">¿Tienes un CV antiguo? Pídele a una IA que lo convierta</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 data-i18n="landing.why.title">¿Por qué?</h2>
+      <p data-i18n="landing.why.text">
+        Tu CV es texto plano: vive en un archivo .md que puedes versionar, copiar y llevar contigo.
+        El formato es el mismo que usa el plugin de Obsidian de este proyecto, así que puedes editar donde
+        te venga mejor y siempre obtienes el mismo PDF limpio.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2 data-i18n="landing.how.title">Cómo usarlo</h2>
+      <ol class="steps">
+        <li data-i18n="landing.how.1">Pulsa "Abrir el editor".</li>
+        <li data-i18n="landing.how.2">Escribe tu CV en markdown a la izquierda; el PDF se actualiza solo.</li>
+        <li data-i18n="landing.how.3">Pulsa "⤓ PDF" para descargarlo al instante.</li>
+        <li data-i18n="landing.how.4">Se guarda solo en tu navegador. Nada se sube a internet.</li>
+      </ol>
+    </section>
+
+    <section class="section">
+      <h2 data-i18n="landing.features.title">Características</h2>
+      <ul class="grid">
+        <li data-i18n="landing.features.1">Previsualización PDF en vivo (WYSIWYG)</li>
+        <li data-i18n="landing.features.2">Descarga de PDF al instante</li>
+        <li data-i18n="landing.features.3">Compatible con español e inglés</li>
+        <li data-i18n="landing.features.4">Importar / exportar .md</li>
+        <li data-i18n="landing.features.5">Guardado local automático</li>
+        <li data-i18n="landing.features.6">100% open source (GPL-3.0)</li>
+      </ul>
+    </section>
+
+    <section class="section" id="donaciones">
+      <h2 data-i18n="landing.donate.title">Donaciones</h2>
+      <p data-i18n="landing.donate.text">
+        Si este proyecto te resultó útil, puedes apoyarlo. Es opcional y siempre gratis.
+      </p>
+      <div class="actions" style="justify-content:flex-start; margin-top:14px;">
+        <!-- Reemplaza estos placeholders por tus enlaces reales -->
+        <a class="btn-ghost" href="https://github.com/sponsors/neteumbra" rel="noopener" data-i18n="landing.donate.sponsors">GitHub Sponsors</a>
+        <a class="btn-ghost" href="https://www.buymeacoffee.com/" rel="noopener" data-i18n="landing.donate.buymeacoffee">Buy Me a Coffee</a>
+      </div>
+    </section>
+  </div>
 </Layout>

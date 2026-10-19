@@ -77,8 +77,9 @@ export function markdownToCv(markdown: string): CvData {
         } else if (['phone', 'telefono', 'tel', 'movil'].includes(k)) {
           cv.contact.phone = value;
           cv.contact.phoneLabel = key;
-        } else if (k === 'location') {
+        } else if (['location', 'ubicacion', 'ciudad', 'direccion', 'city'].includes(k)) {
           cv.contact.location = value;
+          cv.contact.locationLabel = key;
         } else if (['email', 'correo', 'mail'].includes(k)) {
           cv.contact.email = value;
           cv.contact.emailLabel = key;

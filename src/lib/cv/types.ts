@@ -14,6 +14,8 @@ export interface ContactInfo {
   /** Original markdown label of the email field (e.g. "Correo"); renderer falls back to "Email" */
   emailLabel?: string;
   location: string;
+  /** Original markdown label of the location field (e.g. "Ubicación"); renderer falls back to "Location" */
+  locationLabel?: string;
   links: Array<{
     text: string;
     url: string;

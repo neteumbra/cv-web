@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="cv-web — Créditos">
+  <div class="container">
+    <h1 data-i18n="credits.title">Créditos</h1>
+
+    <div class="card">
+      <p data-i18n="credits.body">
+        El motor de CV (parser markdown y render PDF) de este proyecto deriva de xthecapx/cv-generator,
+        creado por Cristian Daniel Márquez Barrios (xthecapx). Todo el crédito original es suyo.
+      </p>
+      <p style="margin-top:18px;">
+        <a class="btn-primary" href="https://github.com/xthecapx/cv-generator" rel="noopener" data-i18n="credits.repo">
+          Ver el repo original
+        </a>
+      </p>
+      <p style="margin-top:18px; color:var(--muted);" data-i18n="credits.license">
+        Licencia: GPL-3.0. Este proyecto es una reescritura independiente en Astro, publicada como software libre.
+      </p>
+    </div>
+  </div>
+</Layout>

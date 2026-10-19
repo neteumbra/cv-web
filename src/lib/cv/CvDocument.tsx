@@ -71,6 +71,13 @@ export const CvDocument = ({ cvData }: { cvData: CvData }) => {
             <Link src={`mailto:${cvData.contact.email}`} style={documentStyles.contactText}>
               {cvData.contact.email}
             </Link>
+            {cvData.contact.location && (
+              <>
+                <Text style={documentStyles.bullet}>•</Text>
+                <Text>{`${cvData.contact.locationLabel || 'Location'}: `}</Text>
+                <Text style={documentStyles.contactText}>{cvData.contact.location}</Text>
+              </>
+            )}
           </View>
           <View style={documentStyles.contactRow}>
             {cvData.contact.links.map((link, index) => (

@@ -1,64 +1,53 @@
 ---
-title: Title property
-year: 2025
-favorite: true
+title: CV de ejemplo
+year: 2026
 tags:
   - CV
-  - Curriculum Vitae
-  - Resume
+  - Ejemplo
 ---
-# McLOVIN
-- title: Quantum Blockchain Architect
-- Phone: +1 (808) 555-0111
-- Email: mclovin@hawaii.gov
-- Location: Honolulu, HI
-- LinkedIn: linkedin.com/in/mclovin-hawaii
-- GitHub: github.com/thereal-mclovin
+# Alex García Rivera
+- title: Desarrollador de Software Full-Stack
+- Phone: +34 600 000 000
+- Email: alex.garcia@ejemplo.com
+- Ubicación: Madrid, España
+- LinkedIn: linkedin.com/in/alex-garcia-ejemplo
+- GitHub: github.com/alexgarcia-ejemplo
 
-## PROFESSIONAL SUMMARY
-- Time-traveling software engineer with expertise in quantum blockchain and meme optimization
-- Pioneered the development of AI-powered fake ID detection systems (ironically)
-- Recognized as Hawaii's youngest organ donor and most successful ID verification expert
-- Known for writing code that works 60% of the time, every time
+## RESUMEN PROFESIONAL
+Desarrollador de software con más de ocho años de experiencia construyendo aplicaciones web y servicios en la nube. Me especializo en TypeScript, React y Node.js, con interés especial por el código limpio, las pruebas automatizadas y el trabajo en equipo multidisciplinar. Disfruto transformando problemas complejos en soluciones simples y mantenibles.
 
-## PROFESSIONAL EXPERIENCE
-### Superbad Security Inc. | Remote
-#### Chief Identity Officer | 2007 - Present
-- Developed revolutionary age verification algorithms with 21% accuracy
-- Led a team of undercover developers in various convenience stores
-- Created the 'McLovinator' - an AI tool that generates believable fake names
-- Successfully maintained cover as a 25-year-old Hawaiian organ donor
+## EXPERIENCIA PROFESIONAL
+### Nordata Solutions | Remoto
+#### Desarrollador Full-Stack Senior | 2021 - Presente
+- Diseño y desarrollo de una plataforma SaaS de analítica que sirve a más de 200 clientes
+- Migración de un monolito legacy a servicios Node.js desplegados en AWS
+- Implementación de pruebas end-to-end con Cypress y reducción de regresiones en un 40%
+- Mentoring de dos desarrolladores junior y revisión de código del equipo
 
-### Hawaii Department of Motor Vehicles | Remote
-#### ID Quality Assurance Specialist | 2006 - 2007
-- Conducted extensive research on ID photo quality and lighting angles
-- Specialized in font selection for government documentation
-- Achieved record-breaking ID processing time of 4.20 seconds
+### Valleca Digital | Madrid, España
+#### Desarrollador Frontend | 2018 - 2021
+- Construcción de la librería de componentes interna usada por cinco productos
+- Migración de Angular a React mejora a paso y adopción de TypeScript
+- Optimización del rendimiento: tiempo de carga inicial reducido de 4,2 s a 1,3 s
 
-## EDUCATION
-### Ph.D. in Theoretical Identity Physics | Honolulu, HI
-#### University of Hawaii | 2020 - Present
-- Research focus: Quantum Superposition of Driver's Licenses
+## FORMACIÓN
+### Máster en Ingeniería de Software | Madrid, España
+#### Universidad Ejemplo | 2016 - 2018
+- Trabajo final sobre arquitecturas orientadas a eventos en tiempo real
 
-### Master's in Advanced ID Technologies | Honolulu, HI
-#### Hawaii Institute of Technology | 2018 - 2020
-- Thesis: 'Why Nobody Questions Hawaiian Organ Donors'
+### Grado en Informática | Madrid, España
+#### Universidad de Ejemplo | 2012 - 2016
 
-## TECHNICAL SKILLS
-- ID Photography & Lighting
-- Quantum Computing in Visual Basic
-- Advanced Font Psychology
-- Blockchain ID Verification
-- Time Travel Debugging
-- Meme-Driven Development (MDD)
+## HABILIDADES TÉCNICAS
+- Lenguajes: TypeScript, JavaScript, Python, SQL
+- Frontend: React, Astro, Next.js, CSS moderno
+- Backend y nube: Node.js, PostgreSQL, Docker, AWS
+- Pruebas y herramientas: Vitest, Cypress, Git, CI/CD
 
-## CERTIFICATIONS \break
-- Certified Hawaiian Organ Donor (2007)
-- Advanced ID Photoshop Specialist
-- Professional Background Actor in Liquor Stores
-- Defensive Driver's License Handling
+## IDIOMAS
+- Español: nativo
+- Inglés: nivel profesional (C1)
 
-## PUBLICATIONS
-- 'Why 25 is the Perfect Age' - Journal of Identity Studies
-- 'The Art of Looking Older Than You Are' - Hawaii Tech Review
-- 'FOGLE: A New Framework for ID Verification' - Proceedings of the International Conference on Making It Past Bouncers 
+## CERTIFICACIONES \break
+- AWS Certified Developer – Associate (2024)
+- Certificación profesional de Scrum (2022)

@@ -53,5 +53,5 @@ export default function Editor() {
     };
   }, []);
 
-  return <div ref={host} className="h-full overflow-auto" />;
+  return <div ref={host} style={{ width: '100%', height: '100%', overflow: 'auto' }} />;
 }

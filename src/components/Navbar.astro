@@ -1,0 +1,14 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+<nav class="navbar">
+  <a class="brand" href={`${base}/`}>cv-web</a>
+  <ul class="links">
+    <li><a href={`${base}/`} data-i18n="nav.home">Inicio</a></li>
+    <li><a href={`${base}/editor/`} data-i18n="nav.editor">Editor</a></li>
+    <li><a href={`${base}/ai/`} data-i18n="nav.ai">Instrucciones IA</a></li>
+    <li><a href={`${base}/credits/`} data-i18n="nav.credits">Créditos</a></li>
+    <li><a href={`${base}/#donaciones`} data-i18n="nav.donate">Donar</a></li>
+  </ul>
+  <button id="lang-toggle" type="button" aria-label="Change language">🌐 ES</button>
+</nav>
