@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Toolbar from '../components/Toolbar.tsx';
+import Editor from '../components/Editor.tsx';
+import PdfPreview from '../components/PdfPreview.tsx';
+---
+<Layout>
+  <Toolbar client:only="react" />
+  <main class="split">
+    <Editor client:only="react" />
+    <PdfPreview client:only="react" />
+  </main>
+</Layout>

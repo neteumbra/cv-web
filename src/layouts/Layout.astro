@@ -1,0 +1,81 @@
+---
+interface Props {
+  title?: string;
+}
+const { title = 'cv-web — Editor de CV en Markdown' } = Astro.props;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Editor de CV en markdown con previsualización PDF en vivo. Todo en tu navegador." />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}/favicon.svg`} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #2f81f7;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { margin-right: 8px; letter-spacing: 0.5px; }
+  .toolbar .btn,
+  .toolbar button {
+    background: #21262d;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font: inherit;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .toolbar button:hover:not(:disabled),
+  .toolbar .btn:hover { background: #30363d; border-color: var(--muted); }
+  .toolbar button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .toolbar .status { margin-left: auto; color: var(--muted); font-size: 12px; }
+
+  .split {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 0;
+  }
+  .split > :first-child { border-right: 1px solid var(--border); }
+  .split > * { min-width: 0; min-height: 0; overflow: hidden; }
+
+  @media (max-width: 800px) {
+    .split { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+    .split > :first-child { border-right: none; border-bottom: 1px solid var(--border); }
+    .toolbar { flex-wrap: wrap; }
+    .toolbar .status { margin-left: 0; width: 100%; }
+  }
+</style>
