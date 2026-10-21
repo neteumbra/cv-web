@@ -61,22 +61,6 @@ El workflow [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) const
 
 URL: `https://<usuario>.github.io/cv-web` (ajusta `site` y `base` en [`astro.config.mjs`](astro.config.mjs) si cambias el nombre del repo).
 
-## Arquitectura
-
-Astro con **islas React**; el estado se comparte con [nanostores](https://nanostores.github.io/):
-
-```
-$markdown (fuente de verdad, localStorage)
-   └─ computed ─▶ $cvData ─▶ PdfPreview (PDFViewer)
-Editor ─(debounce)─▶ $markdown
-Toolbar ─▶ lee $markdown / $cvData
-```
-
-- `src/lib/cv/` — motor de parser + render PDF.
-- `src/stores/` — estado global (`cv`, `lang`).
-- `src/i18n/` — diccionario ES/EN.
-- `src/components/` — islas React + Navbar/Footer.
-
 ## Licencia
 
 **GPL-3.0** (ver [LICENSE](LICENSE)) — software libre.
