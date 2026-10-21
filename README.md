@@ -1,27 +1,39 @@
 # cv-web
 
-Editor de CV en **Markdown** con **previsualización PDF en vivo** (WYSIWYG). 100 % en el navegador: sin servidores, sin base de datos, **ningún dato sale de tu equipo**.
+<div align="center">
 
-**100 % open source bajo GPL-3.0.** Interfaz disponible en **español e inglés**.
+![Astro](https://img.shields.io/badge/Astro-5-1F2937?style=for-the-badge&logo=astro&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-1F2937?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-19-1F2937?style=for-the-badge&logo=react&logoColor=white)
+![CodeMirror](https://img.shields.io/badge/CodeMirror-6-007396?style=for-the-badge&logo=codemirror&logoColor=white)
+![PDF](https://img.shields.io/badge/PDF-Export-007396?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)
+![i18n](https://img.shields.io/badge/i18n-ES%20%2F%20EN-1F2937?style=for-the-badge)
+![License](https://img.shields.io/badge/License-GPL--3.0-1F2937?style=for-the-badge&logo=gnu&logoColor=white)
 
-## Qué hace
+</div>
 
-- ✏️ Editor markdown (CodeMirror 6) a la izquierda
-- 👀 Previsualización PDF real a la derecha (se actualiza mientras escribes)
-- ⤓ Descarga de PDF al instante (generada en el navegador con `@react-pdf/renderer`)
-- 💾 Guardado automático en `localStorage`
-- 📥 Importar / exportar `.md`
-- 🌐 ES / EN (toggle en la barra superior)
-- 🤖 **Instrucciones para IA**: prompt para convertir un CV antiguo a este formato
+A **Markdown CV editor with live PDF preview** (WYSIWYG). 100% in the browser: no servers, no database, **no data ever leaves your machine**.
 
-## Páginas
+**100% open source under GPL-3.0.** Interface available in **Spanish and English**.
 
-- `/` — Inicio: qué es, por qué y cómo usarlo (+ donaciones)
-- `/editor` — El editor markdown + preview PDF
-- `/ai` — Instrucciones para IA (prompt copiable)
-- `/credits` — Créditos al autor original
+## Features
 
-## Formato del CV
+- Markdown editor (CodeMirror 6) on the left
+- Real PDF preview on the right (updates as you type)
+- Instant PDF download (generated in the browser with `@react-pdf/renderer`)
+- Automatic saving to `localStorage`
+- Import / export `.md`
+- ES / EN toggle in the top bar
+- **AI instructions**: a prompt to convert an old CV into this format
+
+## Pages
+
+- `/` — Home: what it is, why and how to use it (+ donations)
+- `/editor` — The markdown editor + PDF preview
+- `/ai` — AI instructions (copyable prompt)
+- `/credits` — Credits to the original author
+
+## CV Format
 
 ```markdown
 # Nombre
@@ -40,29 +52,29 @@ Un párrafo justo tras el ## se muestra sin viñeta (resumen).
 - Logro 2
 ```
 
-- Los campos de contacto aceptan **español e inglés** (`Phone`/`Teléfono`, `Email`/`Correo`, `Location`/`Ubicación`/`Ciudad`).
-- `\break` tras un `##` o `###` fuerza salto de página.
-- Enlaces como `[texto](url)` dentro de cualquier detalle.
+- Contact fields accept **both Spanish and English** (`Phone`/`Teléfono`, `Email`/`Correo`, `Location`/`Ubicación`/`Ciudad`).
+- `\break` after a `##` or `###` forces a page break.
+- Links like `[text](url)` work inside any detail.
 
-Ejemplo completo: [`src/data/default.md`](src/data/default.md).
+Full example: [`src/data/default.md`](src/data/default.md).
 
-## Desarrollo
+## Development
 
 ```bash
 npm install
 npm run dev      # http://localhost:4321/cv-web
-npm run build    # genera dist/
+npm run build    # builds dist/
 npm run preview
 ```
 
-## Despliegue (GitHub Pages)
+## Deployment (GitHub Pages)
 
-El workflow [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) construye y publica en cada push a `main`. En el repo: **Settings → Pages → Source: GitHub Actions**.
+The workflow [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) builds and publishes on every push to `main`. In the repo: **Settings -> Pages -> Source: GitHub Actions**.
 
-URL: `https://<usuario>.github.io/cv-web` (ajusta `site` y `base` en [`astro.config.mjs`](astro.config.mjs) si cambias el nombre del repo).
+URL: `https://<username>.github.io/cv-web` (adjust `site` and `base` in [`astro.config.mjs`](astro.config.mjs) if you rename the repo).
 
-## Licencia
+## License
 
-**GPL-3.0** (ver [LICENSE](LICENSE)) — software libre.
+**GPL-3.0** (see [LICENSE](LICENSE)) — free software.
 
-El motor de CV (`src/lib/cv/`) es derivado de **[xthecapx/cv-generator](https://github.com/xthecapx/cv-generator)** (GPL-3.0), creado por Cristian Daniel Márquez Barrios. Todo el crédito original es suyo.
+The CV engine (`src/lib/cv/`) is derived from **[xthecapx/cv-generator](https://github.com/xthecapx/cv-generator)** (GPL-3.0), created by Cristian Daniel Márquez Barrios. All original credit is theirs.
