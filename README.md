@@ -66,13 +66,6 @@ npm run dev      # http://localhost:4321/cv-web
 npm run build    # builds dist/
 npm run preview
 ```
-
-## Deployment (GitHub Pages)
-
-The workflow [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) builds and publishes on every push to `main`. In the repo: **Settings -> Pages -> Source: GitHub Actions**.
-
-URL: `https://<username>.github.io/cv-web` (adjust `site` and `base` in [`astro.config.mjs`](astro.config.mjs) if you rename the repo).
-
 ## License
 
 **GPL-3.0** (see [LICENSE](LICENSE)) — free software.
