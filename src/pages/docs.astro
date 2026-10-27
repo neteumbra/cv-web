@@ -1,19 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { t } from '../i18n/server';
 import FormatDocEs from '../../docs/formato-cv.md';
 import FormatDocEn from '../../docs/formato-cv.en.md';
 
 const RAW_ES = 'https://github.com/neteumbra/cv-web/blob/main/docs/formato-cv.md';
 const RAW_EN = 'https://github.com/neteumbra/cv-web/blob/main/docs/formato-cv.en.md';
 ---
-<Layout title="cv-web — Docs">
+<Layout titleKey="meta.title.docs">
   <div class="container">
     <header class="page-head">
-      <h1 data-i18n="docs.title">Docs</h1>
-      <p class="lead" data-i18n="docs.lead">
-        Especificación del formato Markdown que entiende el editor. La misma fuente se mantiene en
-        docs/formato-cv.md del repositorio.
-      </p>
+      <h1 data-i18n="docs.title">{t('docs.title')}</h1>
+      <p class="lead" data-i18n="docs.lead">{t('docs.lead')}</p>
       <p class="doc-source">
         <a
           href={RAW_ES}
@@ -22,7 +20,7 @@ const RAW_EN = 'https://github.com/neteumbra/cv-web/blob/main/docs/formato-cv.en
           target="_blank"
           rel="noopener noreferrer"
           data-i18n="docs.raw"
-        >Ver el archivo en GitHub ↗</a>
+        >{t('docs.raw')}</a>
       </p>
     </header>
 

@@ -1,28 +1,26 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { t } from '../i18n/server';
 ---
-<Layout title="cv-web — Instrucciones para IA">
+<Layout titleKey="meta.title.ai">
   <div class="container">
     <header class="page-head">
-      <h1 data-i18n="ai.title">Instrucciones para IA</h1>
-      <p class="lead" data-i18n="ai.desc">
-        ¿Tienes tu CV en Word, PDF, LinkedIn o en texto? Copia este prompt y pégaselo a tu IA favorita
-        junto con tu CV: te lo devolverá en el formato exacto que este editor entiende.
-      </p>
+      <h1 data-i18n="ai.title">{t('ai.title')}</h1>
+      <p class="lead" data-i18n="ai.desc">{t('ai.desc')}</p>
     </header>
 
     <ol class="steps-row">
-      <li data-i18n="ai.step.1">Copia el prompt con el botón de abajo.</li>
-      <li data-i18n="ai.step.2">Pégalo en tu IA junto con tu CV actual.</li>
-      <li data-i18n="ai.step.3">Copia el resultado y pégalo en el editor.</li>
+      <li data-i18n="ai.step.1">{t('ai.step.1')}</li>
+      <li data-i18n="ai.step.2">{t('ai.step.2')}</li>
+      <li data-i18n="ai.step.3">{t('ai.step.3')}</li>
     </ol>
 
     <section class="card">
       <div class="card-head">
-        <span class="card-title" data-i18n="ai.prompt.label">Prompt</span>
-        <button id="copy-prompt" class="btn btn-primary" data-i18n="ai.copy">Copiar prompt</button>
+        <span class="card-title" data-i18n="ai.prompt.label">{t('ai.prompt.label')}</span>
+        <button id="copy-prompt" class="btn btn-primary" data-i18n="ai.copy">{t('ai.copy')}</button>
       </div>
-      <pre id="prompt" class="prompt" data-i18n="ai.prompt"></pre>
+      <pre id="prompt" class="prompt" data-i18n="ai.prompt">{t('ai.prompt')}</pre>
     </section>
   </div>
 

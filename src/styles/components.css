@@ -18,21 +18,34 @@
     white-space: nowrap;
     cursor: pointer;
     border: 1px solid var(--border);
-    background: var(--panel-3);
+    background: var(--panel-2);
     color: var(--text);
     transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.05s;
   }
-  .btn:hover { background: var(--border); border-color: var(--muted); text-decoration: none; }
+  .btn:hover { background: var(--panel-3); border-color: var(--muted); text-decoration: none; }
   .btn:active { transform: translateY(1px); }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
+  /* Anillo de foco visible (teclado) en ambos tipos de botón */
+  .btn:focus-visible,
+  .btn-primary:focus-visible {
+    outline: 2px solid var(--accent-2);
+    outline-offset: 2px;
+  }
+
+  /* Primario = azul de acento: el color de acción de todo el sitio.
+     Texto oscuro sobre azul (5.4:1, AA); el verde queda para el estado "hecho". */
   .btn-primary {
-    background: var(--green);
-    border-color: rgba(240, 246, 252, 0.1);
-    color: #fff;
+    background: var(--accent);
+    border-color: var(--accent-2);
+    color: var(--bg-deep);
     box-shadow: var(--shadow-sm);
   }
-  .btn-primary:hover { background: var(--green-2); border-color: rgba(240, 246, 252, 0.15); text-decoration: none; }
+  .btn-primary:hover {
+    background: var(--accent-2);
+    border-color: var(--accent-2);
+    text-decoration: none;
+  }
 
   .btn-lg { padding: 11px 20px; font-size: 14.5px; border-radius: 10px; }
 
@@ -46,21 +59,13 @@
     display: block;
   }
 
-  /* Estado "hecho" (p. ej. botón Copiar → ✓ Copiado) */
+  /* Estado "hecho" (p. ej. botón Copiar → ✓ Copiado): verde de éxito,
+     ahora como chip suave en vez de relleno sólido */
   .btn.is-done,
   .btn.is-done:hover {
-    background: var(--green-2);
-    border-color: rgba(240, 246, 252, 0.15);
-    color: #fff;
-  }
-
-  .link-btn {
-    background: none;
-    border: 0;
-    padding: 0;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
+    background: var(--green-soft);
+    border-color: var(--green-text);
+    color: var(--green-text);
   }
 
   /* ============================================================
@@ -104,10 +109,10 @@
     transition: background 0.15s, color 0.15s;
   }
   .navbar .links a:hover { background: var(--panel-3); color: var(--text); text-decoration: none; }
+  /* Activo: píldora de acento (fondo + texto), sin barra inferior */
   .navbar .links a[aria-current='page'] {
     background: var(--accent-soft);
     color: var(--accent-2);
-    box-shadow: inset 0 -2px 0 var(--accent);
   }
 
   /* Grupo derecho: control segmentado [Docs][idioma][menú móvil].
@@ -170,9 +175,8 @@
     color: var(--muted);
   }
   .footer .row { display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: center; }
-  .footer .os { color: var(--text-2); font-weight: 600; }
-  .footer a, .footer .link-btn { color: var(--muted); transition: color 0.15s; }
-  .footer a:hover, .footer .link-btn:hover { color: var(--accent-2); text-decoration: none; }
+  .footer a { color: var(--muted); transition: color 0.15s; }
+  .footer a:hover { color: var(--accent-2); text-decoration: none; }
   .footer .spacer { margin-left: auto; }
   .footer .privacy::before {
     content: '●';
@@ -204,7 +208,6 @@
   .modal-body { padding: 6px 18px 18px; }
   .modal-body p { color: var(--text-2); margin: 12px 0 16px; }
   .modal-actions { display: grid; gap: 8px; }
-  .modal-note { font-size: 12.5px; color: var(--muted); margin: 14px 0 0 !important; }
   .icon-btn {
     width: 30px;
     height: 30px;

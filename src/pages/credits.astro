@@ -1,28 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { t } from '../i18n/server';
 
 const base = import.meta.env.BASE_URL;
 ---
-<Layout title="cv-web — Créditos">
+<Layout titleKey="meta.title.credits">
   <div class="container">
     <header class="page-head">
-      <h1 data-i18n="credits.title">Créditos</h1>
-      <p class="lead" data-i18n="credits.lead">
-        Este proyecto es software libre. Aquí está quién lo construyó y de dónde viene.
-      </p>
+      <h1 data-i18n="credits.title">{t('credits.title')}</h1>
+      <p class="lead" data-i18n="credits.lead">{t('credits.lead')}</p>
     </header>
 
     <section class="card">
       <div class="card-head">
-        <span class="card-title" data-i18n="credits.own.label">Este proyecto</span>
+        <span class="card-title" data-i18n="credits.own.label">{t('credits.own.label')}</span>
       </div>
-      <p data-i18n="credits.own.body">
-        cv-web es una reescritura independiente en Astro + React, publicada como software libre
-        bajo GPL-3.0 y disponible en GitHub.
-      </p>
-      <div class="actions" style="justify-content:flex-start; margin-top:16px;">
+      <p data-i18n="credits.own.body">{t('credits.own.body')}</p>
+      <div class="card-actions">
         <a class="btn btn-primary" href="https://github.com/neteumbra/cv-web" target="_blank" rel="noopener noreferrer" data-i18n="credits.own.repo">
-          Ver este repo en GitHub
+          {t('credits.own.repo')}
         </a>
         <a class="btn" href="https://ko-fi.com/neteumbra" target="_blank" rel="noopener noreferrer">
           <img
@@ -33,32 +29,30 @@ const base = import.meta.env.BASE_URL;
             width="20"
             height="16"
           />
-          <span data-i18n="donate.kofi">Apoyar en Ko-fi</span>
+          <span data-i18n="donate.kofi">{t('donate.kofi')}</span>
         </a>
       </div>
     </section>
 
     <section class="card">
       <div class="card-head">
-        <span class="card-title" data-i18n="credits.original.label">Proyecto original</span>
+        <span class="card-title" data-i18n="credits.original.label">{t('credits.original.label')}</span>
       </div>
       <p data-i18n-frag>
-        <span data-i18n="credits.body.before">El motor de CV (parser markdown y render PDF) de este proyecto deriva de </span><a href="https://github.com/xthecapx/cv-generator" target="_blank" rel="noopener noreferrer">xthecapx/cv-generator</a><span data-i18n="credits.body.mid">, creado por </span><a href="https://github.com/xthecapx" target="_blank" rel="noopener noreferrer">(xthecapx)</a><span data-i18n="credits.body.after">. Todo el crédito original es suyo.</span>
+        <span data-i18n="credits.body.before">{t('credits.body.before')}</span><a href="https://github.com/xthecapx/cv-generator" target="_blank" rel="noopener noreferrer">xthecapx/cv-generator</a><span data-i18n="credits.body.mid">{t('credits.body.mid')}</span><a href="https://github.com/xthecapx" target="_blank" rel="noopener noreferrer">(xthecapx)</a><span data-i18n="credits.body.after">{t('credits.body.after')}</span>
       </p>
-      <div class="actions" style="justify-content:flex-start; margin-top:16px;">
+      <div class="card-actions">
         <a class="btn" href="https://github.com/xthecapx/cv-generator" target="_blank" rel="noopener noreferrer" data-i18n="credits.repo">
-          Ver el repo original
+          {t('credits.repo')}
         </a>
       </div>
     </section>
 
     <section class="card">
       <div class="card-head">
-        <span class="card-title" data-i18n="credits.license.label">Licencia</span>
+        <span class="card-title" data-i18n="credits.license.label">{t('credits.license.label')}</span>
       </div>
-      <p data-i18n="credits.license">
-        Licencia: GPL-3.0. Este proyecto es una reescritura independiente en Astro, publicada como software libre.
-      </p>
+      <p data-i18n="credits.license">{t('credits.license')}</p>
     </section>
   </div>
 </Layout>

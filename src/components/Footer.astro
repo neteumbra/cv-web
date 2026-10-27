@@ -1,51 +1,18 @@
 ---
+import { t } from '../i18n/server';
 const base = import.meta.env.BASE_URL;
 ---
 <footer class="footer">
   <div class="row">
-    <span class="os" data-i18n="footer.os">100% Código abierto (GPL-3.0)</span>
-    <a href="https://github.com/neteumbra/cv-web" data-i18n="footer.repo">Ver en GitHub</a>
-    <a href={`${base}/credits/`} data-i18n="footer.credits">Créditos</a>
+    <a href="https://github.com/neteumbra/cv-web" data-i18n="footer.repo">{t('footer.repo')}</a>
+    <a href={`${base}/credits/`} data-i18n="footer.credits">{t('footer.credits')}</a>
     <span class="spacer"></span>
     <a
       class="privacy"
       href={`${base}/privacy/`}
       data-i18n="footer.privacy"
       data-i18n-title="footer.privacy.hint"
-      title="Ver la política de privacidad">Nada sale de tu navegador</a>
+      title={t('footer.privacy.hint')}
+    >{t('footer.privacy')}</a>
   </div>
 </footer>
-
-<dialog class="modal" id="donate-dialog" aria-labelledby="donate-title">
-  <form method="dialog" class="modal-head">
-    <h2 id="donate-title" data-i18n="donate.title">Donaciones</h2>
-    <button class="icon-btn" value="close" aria-label="Cerrar">✕</button>
-  </form>
-  <div class="modal-body">
-    <p data-i18n="donate.text">
-      Si este proyecto te resultó útil, puedes apoyarlo. Es opcional y siempre gratis.
-    </p>
-    <div class="modal-actions">
-      <a
-        class="btn btn-primary"
-        href="https://ko-fi.com/neteumbra"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img
-          class="kofi-ico"
-          src={`${base}/img/kofi-symbol.svg`}
-          alt=""
-          aria-hidden="true"
-          width="20"
-          height="16"
-        />
-        <span data-i18n="donate.kofi">Apoyar en Ko-fi</span>
-      </a>
-    </div>
-    <p class="modal-note" data-i18n="donate.note">
-      El editor seguirá siendo siempre gratuito.
-    </p>
-  </div>
-</dialog>
-

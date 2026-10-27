@@ -5,7 +5,7 @@
      ============================================================ */
   .container { max-width: 880px; margin: 0 auto; padding: 40px 24px 56px; }
   .page-head { margin-bottom: 22px; }
-  .page-head h1 { font-size: 28px; margin-bottom: 8px; }
+  .page-head h1 { font-size: 30px; letter-spacing: -0.02em; margin-bottom: 8px; }
   .page-head .lead { color: var(--muted); font-size: 16px; max-width: 72ch; margin: 0; }
 
   .card {
@@ -16,6 +16,13 @@
     box-shadow: var(--shadow-sm);
   }
   .card + .card { margin-top: 16px; }
+  /* Fila de acciones dentro de una card (botones de enlace, Ko-fi…) */
+  .card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
   .card-head {
     display: flex;
     align-items: center;
@@ -23,6 +30,8 @@
     gap: 12px;
     flex-wrap: wrap;
     margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-soft);
   }
   .card-title {
     font-size: 12px;

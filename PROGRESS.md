@@ -5,9 +5,8 @@ queda y qué está bloqueado. Lee también [`AGENTS.md`](AGENTS.md) para las reg
 
 **Leyenda:** ✅ hecho · 🚧 en curso · ⏳ pendiente · ⛔ bloqueado
 
-**Estado global:** tanda cerrada. Las 10 rondas están ✅ y todo se recoge en un
-**único commit al final de la Ronda 10** (mensaje estructurado por áreas); el
-working tree queda limpio tras él.
+**Estado global:** tanda 1 cerrada — Rondas 1–10 en el commit `d970062`. Tanda 2
+(diseño/copy): Ronda 11 ✅ y commiteada; el working tree queda limpio.
 
 ---
 
@@ -25,6 +24,7 @@ working tree queda limpio tras él.
 | 8 | Negrita y cursiva | ✅ | `lib/cv/inline.ts` (tokenizador recursivo) + `DetailText` + docs §5/§6 + prompt ES/EN; fix de campos de contacto vacíos en el PDF |
 | 9 | Verificación integral | ✅ | 6 páginas × ES/EN × desktop/móvil, reduced-motion, toasts, diálogo, descargas; `check` 0 + `build` 6 + 0 errores JS; fix del `\n` final |
 | 10 | Donaciones + commit único | ✅ | Fuera Buy Me a Coffee (decisión del usuario): se mantiene Ko-fi con su **símbolo oficial en local** (`public/img/kofi-symbol.svg`); commit único al final |
+| 11 | i18n desde dict + navbar/copy/botones | ✅ | Fin del texto muerto en HTML: todo sale de `dict.ts` (`src/i18n/server.ts`); píldora de navbar sin barra inferior; GPL sólo en `/credits`; `.btn` rediseñado (primario azul de acento) |
 
 **Tarea de donaciones (petición del usuario) — RESUELTA en la Ronda 10:**
 
@@ -51,6 +51,55 @@ La petición original era migrar todos los enlaces a
 ---
 
 ## Registro
+
+### 2026-10-26 · Ronda 11 — i18n desde dict, navbar, copy y botones ✅
+
+**Peticiones del usuario** (4) y decisiones tomadas con él:
+
+| Petición | Decisión |
+| --- | --- |
+| «No tiene sentido que haya texto en el HTML si ya se usa en JS…» | Opción **C**, preguntada: el HTML se **renderiza desde `dict.ts`** en el build (`src/i18n/server.ts` → `t(clave)`); cero duplicación y el HTML estático sigue con texto (SEO/sin JS) |
+| «Quite unas cosas del footer» (delegado: «lo que consideres mejor») | Fuera la línea «100% Código abierto (GPL-3.0)» y el **diálogo de donaciones**, que **no tenía ningún disparador** (código huérfano desde la Ronda 10); el footer queda en 3 enlaces |
+| «Tiene un borde inferior que se ve horrible» (navbar) | **Píldora de acento**: `background: var(--accent-soft)` + `color: var(--accent-2)`; eliminado `box-shadow: inset 0 -2px 0 var(--accent)` |
+| «Quita la obsesión por GPL3» | **Sólo el sitio** (preguntado): mención única en `/credits` (tarjeta Licencia); fuera el badge del landing, el footer y `/privacy`. `LICENSE`, cabeceras de `src/lib/cv/*` y README intactos |
+| «Los botones se ven muy genéricos» | Rediseño **global** (páginas + toolbar del editor): primario = azul de acento con texto oscuro (5.4:1, AA), secundario = panel con borde hairline, `:focus-visible` con anillo de acento, `is-done` = chip verde suave |
+
+**Cambios por fichero**
+
+| Fichero | Qué |
+| --- | --- |
+| `src/i18n/server.ts` | **nuevo**: `t(clave)` devuelve el texto ES de `dict` para inyectarlo en los `.astro` |
+| `src/i18n/dict.ts` | copy nuevo ES/EN (`credits.lead` = el texto corto que escribió el usuario, `credits.own.body`, `credits.license`, `ai.desc`, pasos de `/ai`, 6 entradas de `/privacy`); claves nuevas `meta.title.*`, `meta.desc`, `landing.badge`; fuera `footer.os`, `footer.donate`, `donate.title/text/note` y `ui.close`; EN roto arreglado («Everything what you writes», «Al abrir usar web», «NOT US», «¿Que es…?») |
+| `src/i18n/lang.ts` | `apply()` también traduce `document.title` (clave en `data-doc-title` de `<html>`) y la `meta description` (`data-i18n-content`) |
+| `src/layouts/Layout.astro` | prop `titleKey` (clave tipada del dict) en vez de `title` suelto; description desde `t('meta.desc')` |
+| `src/pages/*`, `Navbar`, `Footer` | todo texto visible → `{t('clave')}` con su `data-i18n` (70 apariciones); el badge del landing gana `data-i18n` (antes hardcodeado en inglés); `aria-label`/`title` también salen del dict |
+| `src/styles/components.css` | píldora de navbar; `.btn`/`.btn-primary` rediseñados + anillo `:focus-visible`; `.btn.is-done` en verde suave; fuera `.footer .os`, `.modal-note`, `.link-btn` y el diálogo |
+| `src/styles/content.css` | `.card-head` con hairline inferior, `.card-actions` nuevo (quita los `style="…"` inline de credits) y `h1` a 30px con `letter-spacing: -0.02em` |
+
+**Hallazgos clave**
+
+- **Texto muerto en HTML**: `apply()` pisaba el contenido de los `.astro` al arrancar;
+  el `lead` que el usuario había editado en `credits.astro` no se llegaba a ver nunca.
+  Con la opción C el copy vive **sólo** en `dict.ts`.
+- **Bug del compilador** (documentado para futuras rondas): Astro 5.18.2 /
+  `@astrojs/compiler` 2.13.1 **corrompe el código generado** («Unterminated string
+  literal») con `import type { X }` en el frontmatter y con una `const` antes de un
+  `import`. Workaround: importar valores (`{ dict }` e inferir `keyof typeof dict`) y
+  llevar siempre los `import` al principio del frontmatter.
+- El diálogo de donaciones del footer no tenía disparador en ningún sitio →
+  eliminado; los botones Ko-fi de `/credits` y `/privacy` siguen intactos.
+
+**Verificación**
+
+- `npm run check` → **0 errores / 0 warnings / 0 hints**; `npm run build` → **6
+  páginas**; `dist/` revisado: **1 sola aparición de GPL** (tarjeta de créditos),
+  `<title>`, `meta description` y todos los textos salen del dict.
+- Playwright (dev 4321): landing, `/editor`, `/ai`, `/docs`, `/credits`,
+  `/privacy` × **ES/EN** × **desktop 1280 y móvil 390** → píldora activa, botones
+  nuevos, diálogo de reset (**Esc cierra sin tocar nada**), «✓ Copiado» en chip
+  verde, título de pestaña que sigue al idioma (`cv-web — Privacy`), footer limpio,
+  **0 errores JS**.
+- Tests de las rondas 7/8 en verde (`r7-test.cjs`, `r8-test.cjs` → «TODO OK»).
 
 ### 2026-10-26 · Ronda 10 — Donaciones + commit único ✅
 

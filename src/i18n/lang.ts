@@ -45,6 +45,20 @@ function apply(lang: Lang): void {
     if (e) el.setAttribute('aria-label', e[lang]);
   });
 
+  // Título de la pestaña y meta description: su clave vive en <html> y en la
+  // propia etiqueta <meta>, así el HTML del build sale del mismo diccionario.
+  const docTitleKey = document.documentElement.dataset.docTitle;
+  if (docTitleKey) {
+    const e = entry(docTitleKey);
+    if (e) document.title = e[lang];
+  }
+  const desc = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+  const descKey = desc?.dataset.i18nContent;
+  if (desc && descKey) {
+    const e = entry(descKey);
+    if (e) desc.setAttribute('content', e[lang]);
+  }
+
   // Etiqueta corta del segmento de idioma (el icono SVG no se toca)
   const langLabel = document.getElementById('lang-label');
   if (langLabel) langLabel.textContent = lang.toUpperCase();

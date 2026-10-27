@@ -1,4 +1,5 @@
 ---
+import { t } from '../i18n/server';
 const base = import.meta.env.BASE_URL;
 const norm = (s: string) => s.replace(/\/+$/, '');
 const current = norm(Astro.url.pathname);
@@ -16,35 +17,35 @@ const isActive = (page: string) => current === `${root}/${page}`;
       <a
         href={`${base}/editor/`}
         data-i18n="nav.editor"
-        aria-current={isActive('editor') ? 'page' : undefined}>Editor</a>
+        aria-current={isActive('editor') ? 'page' : undefined}>{t('nav.editor')}</a>
     </li>
     <li>
       <a
         href={`${base}/ai/`}
         data-i18n="nav.ai"
-        aria-current={isActive('ai') ? 'page' : undefined}>Instrucciones IA</a>
+        aria-current={isActive('ai') ? 'page' : undefined}>{t('nav.ai')}</a>
     </li>
     <li>
       <a
         href={`${base}/credits/`}
         data-i18n="nav.credits"
-        aria-current={isActive('credits') ? 'page' : undefined}>Créditos</a>
+        aria-current={isActive('credits') ? 'page' : undefined}>{t('nav.credits')}</a>
     </li>
   </ul>
 
   {/* Grupo derecho: control segmentado [Docs][idioma][menú móvil] */}
-  <div class="nav-actions" role="group" aria-label="Acciones" data-i18n-aria="nav.actions">
+  <div class="nav-actions" role="group" aria-label={t('nav.actions')} data-i18n-aria="nav.actions">
     <a
       class="seg"
       href={`${base}/docs/`}
       data-i18n="nav.docs"
-      aria-current={isActive('docs') ? 'page' : undefined}>Docs</a>
+      aria-current={isActive('docs') ? 'page' : undefined}>{t('nav.docs')}</a>
 
     <button
       id="lang-toggle"
       class="seg"
       type="button"
-      aria-label="Cambiar idioma"
+      aria-label={t('nav.lang')}
       data-i18n-aria="nav.lang"
     >
       <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -62,7 +63,7 @@ const isActive = (page: string) => current === `${root}/${page}`;
       type="button"
       aria-expanded="false"
       aria-controls="nav-links"
-      aria-label="Menú"
+      aria-label={t('nav.menu')}
       data-i18n-aria="nav.menu"
     >
       <svg class="ico icon-open" width="16" height="16" viewBox="0 0 24 24" fill="none"

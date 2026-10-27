@@ -1,6 +1,8 @@
 ---
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import { t } from '../i18n/server';
+import { dict } from '../i18n/dict';
 // CSS global, extraído de este mismo fichero (Ronda 5). El orden de los
 // imports es el orden de la cascada original: no reordenar a la ligera.
 import '../styles/tokens.css';
@@ -11,20 +13,26 @@ import '../styles/editor.css';
 import '../styles/content.css';
 import '../styles/responsive.css';
 interface Props {
-  title?: string;
+  /** Clave del diccionario para <title>; el JS la actualiza al cambiar idioma.
+      (`import type` rompe el compilador de Astro 5.18.2 → se infiere de `dict`.) */
+  titleKey: keyof typeof dict;
 }
-const { title = 'cv-web — Editor de CV en Markdown' } = Astro.props;
+const { titleKey } = Astro.props;
 ---
 <!doctype html>
-<html lang="es">
+<html lang="es" data-doc-title={titleKey}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Editor de CV en markdown con previsualización PDF en vivo. Todo en tu navegador, open source." />
+    <meta
+      name="description"
+      content={t('meta.desc')}
+      data-i18n-content="meta.desc"
+    />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0d1117" />
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}/favicon.svg`} />
-    <title>{title}</title>
+    <title>{t(titleKey)}</title>
   </head>
   <body>
     <Navbar />

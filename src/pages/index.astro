@@ -1,21 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { t } from '../i18n/server';
 const base = import.meta.env.BASE_URL;
 ---
-<Layout title="cv-web — Tu CV en Markdown con PDF al instante">
+<Layout titleKey="meta.title.landing">
   <div class="hero-page">
     <section class="hero">
-      <span class="badge">100% open source · GPL-3.0</span>
-      <h1 data-i18n="landing.hero.title">Tu CV en Markdown, con PDF al instante</h1>
-      <p class="lead" data-i18n="landing.hero.sub">
-        Escribe a la izquierda y mira el PDF renderizarse a la derecha. Todo en tu navegador:
-        sin servidores, sin cuentas y sin que nada salga de tu equipo.
-      </p>
+      <span class="badge" data-i18n="landing.badge">{t('landing.badge')}</span>
+      <h1 data-i18n="landing.hero.title">{t('landing.hero.title')}</h1>
+      <p class="lead" data-i18n="landing.hero.sub">{t('landing.hero.sub')}</p>
       <div class="actions">
-        <a class="btn btn-primary btn-lg" href={`${base}/editor/`} data-i18n="landing.cta">Abrir el editor</a>
-        <a class="btn btn-lg" href={`${base}/ai/`} data-i18n="landing.cta.ai">
-          ¿Tienes un CV antiguo? Pídele a una IA que lo convierta
-        </a>
+        <a class="btn btn-primary btn-lg" href={`${base}/editor/`} data-i18n="landing.cta">{t('landing.cta')}</a>
+        <a class="btn btn-lg" href={`${base}/ai/`} data-i18n="landing.cta.ai">{t('landing.cta.ai')}</a>
       </div>
 
       {/* Mock decorativo del editor. La clase `play` arranca la secuencia
@@ -28,22 +24,22 @@ const base = import.meta.env.BASE_URL;
         </div>
         <div class="mock-body">
           <div class="mock-code">
-            <span class="ln" style="--i:0" data-i18n="landing.mock.name"># Nombre</span>
-            <span class="ln" style="--i:1" data-i18n="landing.mock.title">- title: Diseñador de producto</span>
-            <span class="ln" style="--i:2" data-i18n="landing.mock.email">- Email: correo@ejemplo.com</span>
+            <span class="ln" style="--i:0" data-i18n="landing.mock.name">{t('landing.mock.name')}</span>
+            <span class="ln" style="--i:1" data-i18n="landing.mock.title">{t('landing.mock.title')}</span>
+            <span class="ln" style="--i:2" data-i18n="landing.mock.email">{t('landing.mock.email')}</span>
             <span class="ln" style="--i:3"></span>
-            <span class="ln" style="--i:4" data-i18n="landing.mock.exp">## EXPERIENCIA</span>
-            <span class="ln" style="--i:5" data-i18n="landing.mock.company">### Empresa | Ciudad</span>
-            <span class="ln" style="--i:6" data-i18n="landing.mock.role">#### Rol | 2020 - Presente</span>
-            <span class="ln" style="--i:7" data-i18n="landing.mock.win1">- Logro 1</span>
-            <span class="ln" style="--i:8" data-i18n="landing.mock.win2">- Logro 2</span>
+            <span class="ln" style="--i:4" data-i18n="landing.mock.exp">{t('landing.mock.exp')}</span>
+            <span class="ln" style="--i:5" data-i18n="landing.mock.company">{t('landing.mock.company')}</span>
+            <span class="ln" style="--i:6" data-i18n="landing.mock.role">{t('landing.mock.role')}</span>
+            <span class="ln" style="--i:7" data-i18n="landing.mock.win1">{t('landing.mock.win1')}</span>
+            <span class="ln" style="--i:8" data-i18n="landing.mock.win2">{t('landing.mock.win2')}</span>
           </div>
           <div class="mock-page">
             <div class="mock-sheet">
-              <b data-i18n="landing.mock.sheetName">Nombre</b>
+              <b data-i18n="landing.mock.sheetName">{t('landing.mock.sheetName')}</b>
               <i></i>
               <i class="short"></i>
-              <u data-i18n="landing.mock.sheetExp">EXPERIENCIA</u>
+              <u data-i18n="landing.mock.sheetExp">{t('landing.mock.sheetExp')}</u>
               <i></i>
               <i></i>
               <i class="short"></i>
