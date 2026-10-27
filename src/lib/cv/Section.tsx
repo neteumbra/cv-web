@@ -4,33 +4,44 @@
  * Derivado de: xthecapx/cv-generator (apps/components/src/components/Section.tsx)
  * Copyright (c) xthecapx — Licensed under GPL-3.0 (ver /LICENSE)
  */
-import { View, Text, Link, StyleSheet } from '@react-pdf/renderer';
+import { View, Text, Link, StyleSheet, type TextProps } from '@react-pdf/renderer';
+import type { ReactNode } from 'react';
 import type { CvSection as CvSectionType } from './types';
+import { normalizeUrl } from './urls';
+import { tokenizeInline } from './inline';
 
-const MARKDOWN_LINK = /^\[([^\]]+)\]\(([^)]+)\)$/;
+// `TextProps['style']` es `StyleProp` (estilos normales); el tipo resuelto de
+// <Text> añade los atributos SVG, que estorban con la forma de array.
+type TextStyleProp = TextProps['style'];
 
-function normalizeUrl(url: string): string {
-  return /^(https?:|mailto:|tel:)/i.test(url) ? url : `https://${url}`;
+/**
+ * Nodos en línea de una línea de detalle: enlace, **negrita**, *cursiva* o
+ * texto literal. Negrita/cursiva anidadas se tokenizan a su vez (`**[t](u)**`),
+ * así que el anidamiento termina siempre: el interior de un par no puede
+ * contener otro asterisco.
+ */
+function inlineNodes(text: string, prefix = ''): ReactNode[] {
+  return tokenizeInline(text).map((token, index) => {
+    const key = `${prefix}${index}`;
+    switch (token.kind) {
+      case 'link':
+        return (
+          <Link key={key} src={normalizeUrl(token.href)} style={sectionStyles.link}>
+            {token.text}
+          </Link>
+        );
+      case 'bold':
+        return <Text key={key} style={sectionStyles.bold}>{inlineNodes(token.text, `${key}.`)}</Text>;
+      case 'italic':
+        return <Text key={key} style={sectionStyles.italic}>{inlineNodes(token.text, `${key}.`)}</Text>;
+      default:
+        return <Text key={key}>{token.text}</Text>;
+    }
+  });
 }
 
-function DetailText({ text }: { text: string }) {
-  const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g).filter(Boolean);
-
-  return (
-    <Text style={sectionStyles.detailItem}>
-      {parts.map((part, index) => {
-        const match = part.match(MARKDOWN_LINK);
-        if (match) {
-          return (
-            <Link key={index} src={normalizeUrl(match[2])} style={{ color: '#000000' }}>
-              {match[1]}
-            </Link>
-          );
-        }
-        return <Text key={index}>{part}</Text>;
-      })}
-    </Text>
-  );
+function DetailText({ text, style }: { text: string; style?: TextStyleProp }) {
+  return <Text style={[sectionStyles.detailItem, style]}>{inlineNodes(text)}</Text>;
 }
 
 export const sectionStyles = StyleSheet.create({
@@ -84,6 +95,19 @@ export const sectionStyles = StyleSheet.create({
     fontSize: 10,
     marginBottom: 1,
   },
+  /** Enlaces del cuerpo: se distinguen a simple vista en el PDF. */
+  link: {
+    color: '#1155cc',
+    textDecoration: 'underline',
+  },
+  /** `**negrita**` en línea (hereda el tamaño del detalle). */
+  bold: {
+    fontFamily: 'Helvetica-Bold',
+  },
+  /** `*cursiva*` en línea: Helvetica → Helvetica-Oblique (variante registrada). */
+  italic: {
+    fontStyle: 'italic',
+  },
   bullet: {
     width: 6,
   }
@@ -106,7 +130,8 @@ export function Section({ section, isLast }: CvSectionProps) {
       style={isLast ? [sectionStyles.section, sectionStyles.sectionLast] : sectionStyles.section}
       break={section.break}
     >
-      <Text style={sectionStyles.sectionTitle}>{section.title}</Text>
+      {/* La sección de entrada (texto antes del primer `##`) no lleva cabecera */}
+      {section.title ? <Text style={sectionStyles.sectionTitle}>{section.title}</Text> : null}
       
       {section.items.map((item, itemIndex) => (
         <View
@@ -128,22 +153,38 @@ export function Section({ section, isLast }: CvSectionProps) {
             </View>
           )}
           
-          {item.details && (
-            <View style={trailing(itemIndex) ? [sectionStyles.detailsList, sectionStyles.detailsListLast] : sectionStyles.detailsList}>
-              {item.plain
-                ? item.details.map((detail, detailIndex) => (
-                    <Text key={detailIndex} style={sectionStyles.detailItem}>
-                      <DetailText text={detail} />
-                    </Text>
-                  ))
-                : item.details.map((detail, detailIndex) => (
-                    <View key={detailIndex} style={{ flexDirection: 'row' }}>
-                      <Text style={sectionStyles.bullet}>• </Text>
-                      <DetailText text={detail} />
-                    </View>
-                  ))}
-            </View>
-          )}
+          {/* El contenedor se pinta siempre (aunque no haya detalles): sus
+              márgenes forman parte del espaciado original entre entradas */}
+          <View style={trailing(itemIndex) ? [sectionStyles.detailsList, sectionStyles.detailsListLast] : sectionStyles.detailsList}>
+            {item.details.map((detail, detailIndex) => {
+              // Texto plano (párrafo): se apila sin viñeta.
+              if (!detail.marker) {
+                return (
+                  <Text key={detailIndex} style={sectionStyles.detailItem}>
+                    <DetailText text={detail.text} />
+                  </Text>
+                );
+              }
+              // Lista: pinta el marcador original — `•` para `-`, `*` y `+`,
+              // y el número tal cual (`1.`, `2)`) para las listas numeradas.
+              const numbered = /^\d/.test(detail.marker);
+              return (
+                <View key={detailIndex} style={{ flexDirection: 'row' }}>
+                  <Text
+                    style={
+                      numbered
+                        ? [sectionStyles.bullet, { width: detail.marker.length * 6 + 2 }]
+                        : sectionStyles.bullet
+                    }
+                  >
+                    {numbered ? `${detail.marker} ` : '• '}
+                  </Text>
+                  {/* flex:1 fuerza el wrap dentro del ancho disponible (enlaces largos) */}
+                  <DetailText text={detail.text} style={{ flex: 1 }} />
+                </View>
+              );
+            })}
+          </View>
         </View>
       ))}
     </View>

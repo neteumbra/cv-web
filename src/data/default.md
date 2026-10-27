@@ -5,6 +5,7 @@ tags:
   - CV
   - Ejemplo
 ---
+
 # Alex García Rivera
 - title: Desarrollador de Software Full-Stack
 - Phone: +34 600 000 000
@@ -12,6 +13,7 @@ tags:
 - Ubicación: Madrid, España
 - LinkedIn: linkedin.com/in/alex-garcia-ejemplo
 - GitHub: github.com/alexgarcia-ejemplo
+- Portafolio: alexgarcia.dev
 
 ## RESUMEN PROFESIONAL
 Desarrollador de software con más de ocho años de experiencia construyendo aplicaciones web y servicios en la nube. Me especializo en TypeScript, React y Node.js, con interés especial por el código limpio, las pruebas automatizadas y el trabajo en equipo multidisciplinar. Disfruto transformando problemas complejos en soluciones simples y mantenibles.
@@ -27,7 +29,7 @@ Desarrollador de software con más de ocho años de experiencia construyendo apl
 ### Valleca Digital | Madrid, España
 #### Desarrollador Frontend | 2018 - 2021
 - Construcción de la librería de componentes interna usada por cinco productos
-- Migración de Angular a React mejora a paso y adopción de TypeScript
+- Migración de Angular a React paso a paso y adopción de TypeScript
 - Optimización del rendimiento: tiempo de carga inicial reducido de 4,2 s a 1,3 s
 
 ## FORMACIÓN

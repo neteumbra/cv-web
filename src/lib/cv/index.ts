@@ -8,3 +8,4 @@ export * from './types';
 export * from './cvConverter';
 export * from './CvDocument';
 export * from './Section';
+export * from './urls';

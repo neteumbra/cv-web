@@ -1,0 +1,95 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+<Layout title="cv-web — Privacidad">
+  <div class="container">
+    <header class="page-head">
+      <h1 data-i18n="privacy.title">Privacidad</h1>
+      <p class="lead" data-i18n="privacy.lead">
+        Sin letra pequeña: esto es todo lo que hacemos (y no hacemos) con tus datos.
+      </p>
+    </header>
+
+    <article class="prose">
+      <h2 data-i18n="privacy.q1">¿Se sube mi CV a internet?</h2>
+      <p data-i18n="privacy.a1">
+        No. Escribes aquí y aquí se queda. Esta web no tiene servidor: no hay a dónde subirlo.
+      </p>
+      <p data-i18n="privacy.a1b">
+        Si cierras la pestaña, tu CV sigue ahí: lo guarda tu propio navegador, en tu equipo.
+      </p>
+
+      <h2 data-i18n="privacy.q2">¿Me estáis siguiendo?</h2>
+      <p data-i18n="privacy.a2">
+        Nada de cookies de seguimiento, analíticas, anuncios ni cuentas. No sabemos quién eres ni
+        qué escribes, y no existe ningún registro que consultar.
+      </p>
+
+      <h2 data-i18n="privacy.q3">¿Por qué tanta preocupación por la privacidad?</h2>
+      <p data-i18n="privacy.a3">
+        Un CV lleva datos personales: teléfono, correo, dirección, trayectoria… Merecen el mismo
+        cuidado que si los tuvieras en papel.
+      </p>
+      <p data-i18n="privacy.a3b">
+        Y el código es público (GPL-3.0): cualquiera puede abrirlo y comprobar, línea a línea, que
+        no se envía nada.
+      </p>
+
+      <h2 data-i18n="privacy.q4">¿Que es lo único que SÍ sale a internet?</h2>
+      <ul>
+        <li data-i18n="privacy.a4.1">Al abrir esta web: el alojamiento ve tu IP, nunca tu CV.</li>
+      </ul>
+
+      <h2 data-i18n="privacy.q5">¿Y si quiero borrarlo todo?</h2>
+      <p data-i18n="privacy.a5">
+        Pulsa «↺ Reiniciar» en el editor o borra los datos del sitio desde tu navegador. No queda
+        nada en ningún otro sitio, porque nunca hubo nada.
+      </p>
+
+      <aside class="callout">
+        <h2 data-i18n="privacy.donate.title">Una última cosa</h2>
+        <p data-i18n="privacy.donate.body">
+          Si esto te ha servido, puedes invitarme a un café ☕. Es opcional: el editor es y seguirá
+          siendo gratis.
+        </p>
+        <a
+          class="btn btn-primary"
+          href="https://ko-fi.com/neteumbra"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            class="kofi-ico"
+            src={`${base}/img/kofi-symbol.svg`}
+            alt=""
+            aria-hidden="true"
+            width="20"
+            height="16"
+          />
+          <span data-i18n="donate.kofi">Apoyar en Ko-fi</span>
+        </a>
+      </aside>
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .callout {
+    margin-top: 30px;
+    padding: 18px 20px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+  }
+  /* Gana a .prose h2 (misma página, mayor especificidad) */
+  .prose .callout h2 {
+    margin: 0 0 8px;
+    padding-top: 0;
+    border-top: 0;
+    font-size: 17px;
+  }
+  .prose .callout p { margin: 0 0 14px; }
+</style>

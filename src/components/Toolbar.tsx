@@ -1,72 +1,112 @@
-import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { useStore } from '@nanostores/react';
 import { $markdown, $cvData } from '../stores/cv';
-import { downloadPdf } from '../lib/pdf';
-import { dict, type Lang } from '../i18n/dict';
-import defaultMd from '../data/default.md?raw';
-
-function currentLang(): Lang {
-  return document.documentElement.lang === 'en' ? 'en' : 'es';
-}
+import { downloadPdf, downloadBlob, slugify } from '../lib/pdf';
+import { markdownToCv, cvToMarkdown, formatIsLossless } from '../lib/cv';
+import { toast } from '../lib/toast';
+import { $lang } from '../i18n/lang';
+import { dict, type DictKey } from '../i18n/dict';
+import { examples } from '../data/examples';
+import ResetDialog from './ResetDialog';
 
 function saveText(text: string, filename: string) {
-  const url = URL.createObjectURL(new Blob([text], { type: 'text/markdown' }));
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
+  downloadBlob(new Blob([text], { type: 'text/markdown' }), filename);
 }
 
-/** Isla de acciones: descargar PDF/Markdown, importar Markdown, resetear. */
+/** Isla de acciones: PDF, formateo, exportar Markdown, resetear. */
 export default function Toolbar() {
   const cvData = useStore($cvData);
-  const [lang, setLang] = useState<Lang>('es');
+  const lang = useStore($lang);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
-  useEffect(() => {
-    setLang(currentLang());
-    const onLang = () => setLang(currentLang());
-    window.addEventListener('cv-lang', onLang);
-    return () => window.removeEventListener('cv-lang', onLang);
-  }, []);
+  const t = (key: DictKey) => dict[key][lang];
 
-  const t = (key: string) => dict[key]?.[lang] ?? key;
+  const onDownloadPdf = async () => {
+    if (!cvData) return;
+    try {
+      await downloadPdf(cvData);
+      toast(t('tb.pdf.done'));
+    } catch {
+      toast(t('tb.pdf.error'), 'error');
+    }
+  };
+
+  const onFormat = () => {
+    const source = $markdown.get();
+    try {
+      const cv = markdownToCv(source);
+      if (!cv.contact.name || !cv.sections.length) {
+        toast(t('tb.format.invalid'), 'error');
+        return;
+      }
+      const formatted = cvToMarkdown(cv);
+      if (formatted === source.trim()) {
+        toast(t('tb.format.none'));
+        return;
+      }
+      // Red de seguridad: si el formateo perdería líneas, no se aplica.
+      if (!formatIsLossless(source, formatted)) {
+        toast(t('tb.format.loss'), 'error');
+        return;
+      }
+      $markdown.set(formatted);
+      toast(t('tb.format.done'));
+    } catch {
+      toast(t('tb.format.invalid'), 'error');
+    }
+  };
+
+  const onResetClose = () => {
+    if (dialogRef.current?.returnValue === 'confirm') {
+      // El ejemplo se elige según el idioma activo: en EN se reinicia en EN.
+      $markdown.set(examples[lang]);
+      toast(t('tb.reset.done'));
+    }
+  };
 
   return (
     <header className="toolbar">
-      <strong className="brand">cv-web</strong>
+      <div className="tb-group tb-primary">
+        <button
+          className="btn btn-primary"
+          disabled={!cvData}
+          title={t('tb.pdf.hint')}
+          onClick={onDownloadPdf}
+        >
+          {t('tb.pdf')}
+        </button>
+      </div>
 
-      <button disabled={!cvData} onClick={() => cvData && downloadPdf(cvData)}>
-        {t('tb.pdf')}
-      </button>
+      <span className="tb-sep" aria-hidden="true" />
 
-      <button onClick={() => saveText($markdown.get(), 'cv.md')}>{t('tb.down')}</button>
+      <div className="tb-group">
+        <button className="btn" title={t('tb.format.hint')} onClick={onFormat}>
+          {t('tb.format')}
+        </button>
 
-      <label className="btn">
-        {t('tb.up')}
-        <input
-          type="file"
-          accept=".md,text/markdown"
-          hidden
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) file.text().then((txt) => $markdown.set(txt));
-            e.target.value = '';
+        <button
+          className="btn"
+          title={t('tb.down.hint')}
+          onClick={() => {
+            const slug = slugify(cvData?.contact.name ?? '');
+            saveText($markdown.get(), slug ? `cv-${slug}.md` : 'cv.md');
+            toast(t('tb.down.done'));
           }}
-        />
-      </label>
+        >
+          {t('tb.down')}
+        </button>
 
-      <button
-        onClick={() => {
-          if (confirm(t('tb.reset.confirm'))) {
-            $markdown.set(defaultMd);
-          }
-        }}
-      >
-        {t('tb.reset')}
-      </button>
+        <button className="btn" onClick={() => dialogRef.current?.showModal()}>
+          {t('tb.reset')}
+        </button>
+      </div>
 
-      <span className="status">{t('tb.status')}</span>
+      <span className="tb-status" title={t('tb.status.hint')}>
+        <i className="dot" aria-hidden="true" />
+        {t('tb.status')}
+      </span>
+
+      <ResetDialog ref={dialogRef} onClose={onResetClose} />
     </header>
   );
 }

@@ -1,15 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Toolbar from '../components/Toolbar.tsx';
-import Editor from '../components/Editor.tsx';
-import PdfPreview from '../components/PdfPreview.tsx';
+import Workspace from '../components/Workspace.tsx';
 ---
 <Layout title="cv-web — Editor">
   <div class="editor-wrap">
     <Toolbar client:only="react" />
-    <div class="split">
-      <div class="cell"><Editor client:only="react" /></div>
-      <div class="cell"><PdfPreview client:only="react" /></div>
-    </div>
+    <Workspace client:only="react" />
   </div>
 </Layout>

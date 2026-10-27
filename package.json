@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check": "astro check"
   },
   "dependencies": {
     "@astrojs/react": "^4.2.1",
@@ -23,6 +24,7 @@
     "yaml": "^2.7.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.12",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "typescript": "^5.7.3"

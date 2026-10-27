@@ -22,3 +22,9 @@ pnpm-debug.log*
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# capturas/artefactos de pruebas con Playwright MCP
+.playwright-mcp/
+
+# skills locales de terceros (se descargan, no se versionan)
+.opencode/skills/

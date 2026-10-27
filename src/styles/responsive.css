@@ -1,0 +1,82 @@
+/* Responsive: media queries (800/700/640) y keyframes de la nav.
+   Extraído sin cambios de Layout.astro (<style is:global>), Ronda 5. */
+  /* ============================================================
+     Responsive
+     ============================================================ */
+  @media (max-width: 800px) {
+    .toolbar { padding: 8px; gap: 6px; }
+    .tb-primary { flex: 1 1 100%; }
+    .tb-primary .btn { width: 100%; }
+    /* El grupo de acciones ocupa su propia fila y los botones se parten
+       en varias líneas (antes se salían por la derecha del móvil) */
+    .tb-group { flex: 1 1 100%; flex-wrap: wrap; }
+    .tb-sep { display: none; }
+
+    .workspace { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); }
+    .wtabs {
+      display: flex;
+      gap: 4px;
+      grid-column: 1;
+      grid-row: 1;
+      padding: 6px 8px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+    }
+    .wtabs button {
+      flex: 1;
+      padding: 7px 10px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .wtabs button[aria-pressed='true'] {
+      background: var(--accent-soft);
+      border-color: rgba(47, 129, 247, 0.4);
+      color: var(--accent-2);
+    }
+    .divider { display: none; }
+    .pane { grid-column: 1; grid-row: 2; display: none; }
+    .pane.is-active { display: flex; }
+    .tb-status { display: none; }
+    .preview { padding: 12px; }
+  }
+
+  /* Nav en móvil: acordeón desplegable */
+  @media (max-width: 700px) {
+    .navbar { padding: 6px 10px; gap: 8px; }
+    .nav-toggle { display: inline-flex; }
+    .navbar .links {
+      display: none;
+      flex: 1 1 100%;
+      order: 3;
+      flex-direction: column;
+      gap: 2px;
+      margin-top: 2px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-soft);
+    }
+    .navbar .links.is-open { display: flex; animation: nav-in 0.18s ease; }
+    .navbar .links a { padding: 9px 10px; font-size: 14px; }
+  }
+
+  @keyframes nav-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 28px 18px 44px; }
+    .mock-body { grid-template-columns: 1fr; }
+    .mock-code { border-right: none; border-bottom: 1px solid var(--border); }
+    .hero-page { padding: 28px 18px; }
+    /* El CTA secundario es largo: sin esto, el `nowrap` del .btn desborda
+       el ancho del móvil y la página se desplaza en horizontal */
+    .actions .btn { white-space: normal; text-align: center; }
+    .footer .spacer { margin-left: 0; }
+  }
