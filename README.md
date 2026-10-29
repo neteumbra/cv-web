@@ -107,4 +107,4 @@ npm run preview
 The CV engine (`src/lib/cv/`) is derived from
 **[xthecapx/cv-generator](https://github.com/xthecapx/cv-generator)** (GPL-3.0),
 created by **[(xthecapx)](https://github.com/xthecapx)**. All original credit is
-theirs.
+theirs..
