@@ -4,10 +4,7 @@
 
 ![Astro](https://img.shields.io/badge/Astro-5-1F2937?style=for-the-badge&logo=astro&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-1F2937?style=for-the-badge&logo=typescript&logoColor=white)
-![React](https://img.shields.io/badge/React-19-1F2937?style=for-the-badge&logo=react&logoColor=white)
-![CodeMirror](https://img.shields.io/badge/CodeMirror-6-007396?style=for-the-badge&logo=codemirror&logoColor=white)
 ![PDF](https://img.shields.io/badge/PDF-Export-007396?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)
-![i18n](https://img.shields.io/badge/i18n-ES%20%2F%20EN-1F2937?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-GPL--3.0-1F2937?style=for-the-badge&logo=gnu&logoColor=white)
 
 </div>
