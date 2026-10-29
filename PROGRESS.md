@@ -5,8 +5,11 @@ queda y qué está bloqueado. Lee también [`AGENTS.md`](AGENTS.md) para las reg
 
 **Leyenda:** ✅ hecho · 🚧 en curso · ⏳ pendiente · ⛔ bloqueado
 
-**Estado global:** tanda 1 cerrada — Rondas 1–10 en el commit `d970062`. Tanda 2
-(diseño/copy): Ronda 11 ✅ y commiteada; el working tree queda limpio.
+**Estado global:** tanda 1 cerrada — Rondas 1–10 en el commit `d970062`, tanda 2
+(Ronda 11) en `f1ce664`. **Tanda 3 (calidad + deploy) cerrada: Rondas 12 y 13 en
+el commit único de cierre de esta tanda.** Falta el **push a `main` por parte del
+usuario** (el deploy lo dispara el workflow `.github/workflows/deploy.yml` sobre
+ese push).
 
 ---
 
@@ -25,6 +28,8 @@ queda y qué está bloqueado. Lee también [`AGENTS.md`](AGENTS.md) para las reg
 | 9 | Verificación integral | ✅ | 6 páginas × ES/EN × desktop/móvil, reduced-motion, toasts, diálogo, descargas; `check` 0 + `build` 6 + 0 errores JS; fix del `\n` final |
 | 10 | Donaciones + commit único | ✅ | Fuera Buy Me a Coffee (decisión del usuario): se mantiene Ko-fi con su **símbolo oficial en local** (`public/img/kofi-symbol.svg`); commit único al final |
 | 11 | i18n desde dict + navbar/copy/botones | ✅ | Fin del texto muerto en HTML: todo sale de `dict.ts` (`src/i18n/server.ts`); píldora de navbar sin barra inferior; GPL sólo en `/credits`; `.btn` rediseñado (primario azul de acento) |
+| 12 | Bug del botón + copy + estética | ✅ | `.prose a:not(.btn)` (el estilo de enlace le ganaba al botón de Ko-fi); componente `DonateButton.astro`; `/credits` y `/privacy` reescritos (asertivos) + FAQ numerada y JSON-LD `FAQPage` |
+| 13 | SEO "CV ATS" + i18n por rutas + deploy | ✅ | ES en raíz + `/en/` (12 páginas), metadatos por página, OG image por idioma, robots/sitemap/404, copy con keyword "crear CV ATS gratis"; idioma en `Astro.props` (bug de Astro 5.18 con `Astro.params`) |
 
 **Tarea de donaciones (petición del usuario) — RESUELTA en la Ronda 10:**
 
@@ -51,6 +56,130 @@ La petición original era migrar todos los enlaces a
 ---
 
 ## Registro
+
+### 2026-10-28 · Ronda 13 — SEO "CV ATS", i18n por rutas y SEO técnico ✅
+
+**Peticiones del usuario** y decisiones tomadas:
+
+| Petición | Decisión |
+| --- | --- |
+| Posicionar **"CV ATS"** (ES: «crear CV ATS»; EN: «ATS resume builder») | Copy SEO en `dict.ts`: `<title>` y `meta description` **por página** en ambos idiomas; hero del landing con la keyword; bloque nuevo «Por qué este formato le sienta bien a un ATS» (3 tarjetas: texto seleccionable, una sola columna, encabezados/fechas estándar) |
+| Claim ATS **comprobable**, sin prometer compatibilidad certificada | Nota honesta en el landing: *«No certificamos compatibilidad con ningún ATS concreto: nadie puede prometer eso de forma honesta…»* — sólo se explican las decisiones de formato que sí controlamos |
+| SEO técnico «esencial completo» **sin dependencias nuevas** (regla 7) | canónica + `hreflang` (es/en/x-default→ES) por página, OG + Twitter por idioma, JSON-LD (`SoftwareApplication` en el landing, `FAQPage` en `/privacy`), `robots.txt` y `sitemap.xml` como **endpoint de Astro** (no `@astrojs/sitemap`), `404.html` con `noindex` |
+| Imagen OG **1200×630 generada localmente** | `public/img/og.png` (ES) y `og.en.png` (EN), hechas con chromium headless sobre un HTML temporal (script en `/tmp/opencode/gen-og.mjs`); 0 peticiones externas (regla 5) |
+| Arquitectura i18n (delegada + preguntada) | **Rutas pre-renderizadas por idioma**: ES en la raíz, EN bajo `/en/` → **12 páginas**. El selector de la navbar pasa a ser **dos enlaces normales** (`[ES][EN]`, `aria-current` en el activo), no un toggle client-side: se rastrean y comparten las dos URLs reales |
+| «Commit único al final y push por el usuario» (regla 11) | Un solo commit de la tanda 3 (Rondas 12+13); el usuario hace el push a `main` → el workflow `deploy.yml` publica |
+
+**Cambios por fichero** (además de los de la Ronda 12, no commiteados aún):
+
+| Fichero | Qué |
+| --- | --- |
+| `src/i18n/routes.ts` | **nuevo**: `STATIC_LANG_PATHS` (2 paths con `props.lang`) y `pageHref(lang, ruta)` |
+| `src/pages/[...lang]/` | **las 6 páginas movidas con `git mv`** y renderizadas 2×; todas con `getStaticPaths = () => STATIC_LANG_PATHS` + `interface Props { lang }` |
+| `src/pages/404.astro`, `src/pages/sitemap.xml.ts` | **nuevos**: 404 propio (noindex, sin canónica/alternates) y sitemap estático con las 12 URLs + `xhtml:link` hreflang |
+| `src/layouts/Layout.astro` | Props `lang`/`titleKey`/`descKey`/`jsonLd`/`noindex`; canonical + hreflang + OG/Twitter + JSON-LD; `<html lang>`; fuera el i18n de cliente |
+| `src/components/Navbar.astro` | selector de idioma = 2 enlaces por ruta (antes toggle + `cv-lang`); activo con `aria-current` |
+| `src/components/Footer.astro`, `DonateButton.astro` | reciben `lang` por props; sin `data-i18n` |
+| `src/i18n/dict.ts` | copy SEO por página (`meta.title.*`/`meta.desc.*` ES+EN), hero + bloque `landing.ats.*`, claves `meta.title.404`/`notfound.*`; fuera `nav.lang` y `meta.desc` global |
+| `src/i18n/server.ts`, `lang.ts`, `react.ts` | `t(clave, lang)` explícito; `$lang` lee `<html lang>` de la ruta; fuera `readLang`/`onLang` |
+| `src/lib/events.ts`, `src/lib/toast.ts` | fuera el evento `cv-lang` y `initI18n`; sólo queda `cv-toast` |
+| `src/stores/cv.ts` | primer arranque con `examples[$lang.get()]` (idioma de la URL); `cv-web:lang` ya no se escribe (clave vieja respetada, no borrada — regla 6) |
+| `src/pages/[...lang]/docs.astro` | renderiza **sólo** el markdown del idioma de la ruta (antes los dos en el DOM + script que ocultaba uno) |
+| `src/pages/[...lang]/ai.astro` | feedback del clipboard vía `data-*` (el script no necesita el diccionario) |
+| `public/robots.txt`, `public/img/og.png`, `og.en.png` | **nuevos** |
+| `AGENTS.md`, `README.md` | actualizados a la nueva arquitectura (12 páginas, `Astro.props`, SEO, puerto 4322, sin «modal in the footer») |
+
+**Hallazgos clave**
+
+- **Bug de Astro 5.18.2**: cuando el frontmatter exporta `getStaticPaths`, el
+  compilador **extrae todo el frontmatter a nivel de módulo**, y ahí
+  `Astro.params` es `undefined` → «Cannot read properties of undefined (reading
+  'lang')» al generar las rutas. **Solución: el idioma viaja en `props`**
+  (`{ params: { lang: 'en' }, props: { lang: 'en' } }`) y la página lee
+  `Astro.props`. Documentado en `routes.ts` y en la regla 2 de `AGENTS.md`.
+- `getStaticPaths` tiene que ser **función** (`() => STATIC_LANG_PATHS`); pasar
+  el array suelto da «mod.getStaticPaths is not a function».
+- El compilador sigue rechazando **anotaciones de tipo complejas** en `const`
+  del frontmatter («The constant *faq* must be initialized»): solución `as
+  const`, ya usada en la Ronda 11.
+- Rutas profundas → los imports relativos suben un nivel extra:
+  `../../docs/formato-cv.md` fallaba desde `[...lang]/`, toca `../../../`.
+- El CV **sobrevive al cambio de idioma** porque el markdown vive en
+  `localStorage` (mismo origen) y ahora sólo cambia la URL: test CDP
+  `/editor/` → `/en/editor/` → **8/8 TODO OK**.
+
+**Verificación**
+
+- `npm run check` → **0 errores / 0 warnings / 0 hints**; `npm run build` →
+  **13 páginas** (12 HTML + `sitemap.xml`) + `404.html`.
+- Metadatos inspeccionados en `dist/`: `<html lang>` correcto por ruta,
+  canonical/hreflang/OG por idioma (`og.png` en ES, `og.en.png` en EN),
+  JSON-LD válido, sitemap con **12 URLs** y sus 3 alternates, robots.txt con
+  el sitemap.
+- Capturas CDP (chromium headless, 0 `Runtime.exceptionThrown`): **12 rutas**
+  (ES y EN) + `404.html`, desktop 1280 y móvil 390 (landing y varias páginas);
+  el PDF del editor renderiza con el CV de ejemplo en su idioma (espera de
+  3,2 s en el script).
+- Selector de idioma comprobado en el HTML generado: en `/credits/` →
+  `aria-current="page"` en el enlace ES y `href="/cv-web/en/credits/"` en EN;
+  el «Docs» de `/en/privacy/` apunta a `/cv-web/en/docs/`.
+- Test de persistencia (`/tmp/opencode/test-lang-nav.mjs`, CDP puro): lang,
+  toolbar traducida, marcador visible en ambas URLs, `localStorage` intacto y
+  0 errores JS → **TODO OK**.
+
+### 2026-10-28 · Ronda 12 — Bug del botón, copy de /credits y /privacy ✅
+
+**Peticiones del usuario** (4) y decisiones tomadas (formulario de 10 preguntas):
+
+| Petición | Decisión |
+| --- | --- |
+| «Esto se ve mal porque tiene los estilos del link» (botón de Ko-fi en `/privacy`) | **Causa raíz encontrada**: `.prose a` (0,1,1) le ganaba a `.btn` (0,1,0) → el botón salía azul y subrayado, y `.prose a:hover` (0,2,1) lo ponía **blanco sobre azul** al pasar el ratón. Fix: `.prose a:not(.btn)` + `:hover` homólogo, más `text-decoration: none` en `.btn` (defensa en profundidad) |
+| «Mejora el texto y el estilo de crédito y de privacy para que sea asertivo y se entienda a la primera» | **Reestructuración libre** (elegida en el formulario): `/privacy` empieza por «La respuesta corta» (callout verde) y sigue con **6 preguntas numeradas**; `/credits` queda en 4 tarjetas + soporte. ES y EN reescritos en `dict.ts` |
+| «Hay algo mal por ahí» / coherencia de los botones | **`src/components/DonateButton.astro`** (nuevo): componente único para `/credits` y `/privacy`, **siempre primario** (decisión del usuario en el formulario) |
+| «Hay que hacer que la página se vea bien» | Badge «Software libre · GPL-3.0» en `/credits`, filete de acento en la tarjeta de soporte, numeración automática en la FAQ, verificación de las **6 páginas × ES/EN × desktop/móvil** |
+
+**Cambios por fichero**
+
+| Fichero | Qué |
+| --- | --- |
+| `src/styles/content.css` | `.prose a` → `.prose a:not(.btn)`; `.prose a:hover` → `.prose a:not(.btn):hover` |
+| `src/styles/components.css` | `text-decoration: none` en el bloque base `.btn` |
+| `src/components/DonateButton.astro` | **nuevo**: `<a class="btn btn-primary">` + símbolo Ko-fi local + `data-i18n` en el `<span>` (no en la `<a>`, o `apply()` borraría la `<img>`) |
+| `src/i18n/dict.ts` | `/privacy`: 6 preguntas (antes 5, con `q2`/`q4` reescritas y `q5`→`q6`), claves `privacy.summary.title/body` y `privacy.a6b`; fuera `privacy.a3b` y `privacy.a4.1` (repartidas). `/credits`: `credits.lead`, `credits.own.body`, `credits.original.label`, `credits.repo`, `credits.license`, `credits.support.label/body`, `credits.badge` reescritas o nuevas |
+| `src/pages/privacy.astro` | FAQ montada desde **un único array `faq` con claves** (mismo origen que el JSON-LD: no pueden desincronizarse), `<section class="qa">` por pregunta, callout de donación con el componente, estilos scoped (resumen verde, numeración, callout) y `<script type="application/ld+json">` con `FAQPage` |
+| `src/pages/credits.astro` | badge + 4 tarjetas (soporte con `border-left` de acento) y `<DonateButton />`; fuera el `const base` sin uso |
+
+**Hallazgos clave**
+
+- **El bug era de especificidad CSS**, no del componente: cualquier `a.btn` dentro
+  de `.prose` se rompía. Con `:not(.btn)` el subrayado de enlace queda reservado a
+  los enlaces de texto de verdad (el de `xthecapx/cv-generator` en `/credits` lo
+  confirma: se sigue subrayando).
+- **JSON-LD desde el diccionario**: la FAQ visible y el `FAQPage` se generan del
+  mismo array de claves → Google y el usuario leen lo mismo. `</` se escapa con
+  `\u003c` para no romper el `<script>`.
+- El script de verificación por **CDP puro** (`/tmp/opencode/shoot.mjs`, sin
+  dependencias: node 24 trae `WebSocket`) sustituye al MCP de Playwright, que no
+  está disponible en esta sesión. Nota: el scroll vive en `main.page`, no en
+  `body` → para capturas "full page" hay que medir `main.page.scrollHeight` y
+  sumar navbar + footer.
+- En `/editor` el panel PDF sale **en blanco** en capturas con <3 s de espera: es
+  el tiempo de render del worker, no un bug (ya verificado en rondas anteriores).
+
+**Verificación**
+
+- `npm run check` → **0 errores / 0 warnings / 1 hint** (el `base` sin usar de
+  `/credits`, ya eliminado); `npm run build` → **6 páginas**.
+- CSS construido (`dist/_astro/*.css`): aparece **sólo** `.prose a:not(.btn)` y
+  `.prose a:not(.btn):hover`; ninguna regla `.prose a` suelta golpea a `.btn`.
+- Capturas CDP (`chromium --headless`, `/tmp/opencode/shots/`): `/credits` y
+  `/privacy` × **ES/EN** × **desktop 1280 / móvil 390** → botón Ko-fi **azul
+  primario con texto oscuro y sin subrayado** en las 4 combinaciones, FAQ
+  numerada, resumen verde, sin scroll horizontal en móvil y **0 errores JS**.
+- Matriz completa: 6 páginas × ES/EN × desktop/móvil = **16 capturas** (landing,
+  `/editor`, `/ai`, `/docs`) → **0 `Runtime.exceptionThrown`** en todas.
+- El texto EN del botón («Support on Ko-fi») **sobrevive** al `data-i18n` en el
+  `<span>`: el icono no se borra.
 
 ### 2026-10-26 · Ronda 11 — i18n desde dict, navbar, copy y botones ✅
 

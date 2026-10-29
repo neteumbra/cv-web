@@ -1,0 +1,186 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { t } from '../../i18n/server';
+import { STATIC_LANG_PATHS, pageHref } from '../../i18n/routes';
+import { type Lang } from '../../i18n/dict';
+
+export const getStaticPaths = () => STATIC_LANG_PATHS;
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+// Datos estructurados de la app: gratis, web y con licencia libre. Sin
+// valoraciones (no hay reseñas reales que mostrar; inventar estrellas es
+// una práctica que Google penaliza).
+const jsonLd = {
+  '@type': 'SoftwareApplication',
+  name: 'cv-web',
+  alternateName: lang === 'en' ? 'ATS resume builder' : 'Creador de CV ATS',
+  description: t('meta.desc.landing', lang),
+  url: new URL(pageHref(lang, '/'), Astro.site ?? 'https://neteumbra.github.io/cv-web').href,
+  inLanguage: lang,
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Any',
+  browserRequirements: lang === 'en' ? 'Requires a modern browser' : 'Requiere un navegador moderno',
+  isAccessibleForFree: true,
+  license: 'https://spdx.org/licenses/GPL-3.0-only.html',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+  featureList: [
+    t('landing.ats.1.title', lang),
+    t('landing.ats.2.title', lang),
+    t('landing.ats.3.title', lang),
+  ],
+  author: { '@type': 'Person', name: 'neteumbra', url: 'https://github.com/neteumbra' },
+};
+---
+<Layout lang={lang} titleKey="meta.title.landing" descKey="meta.desc.landing" jsonLd={jsonLd}>
+  <div class="hero-page">
+    <section class="hero">
+      <span class="badge">{t('landing.badge', lang)}</span>
+      <h1>{t('landing.hero.title', lang)}</h1>
+      <p class="lead">{t('landing.hero.sub', lang)}</p>
+      <div class="actions">
+        <a class="btn btn-primary btn-lg" href={pageHref(lang, '/editor/')}>{t('landing.cta', lang)}</a>
+        <a class="btn btn-lg" href={pageHref(lang, '/ai/')}>{t('landing.cta.ai', lang)}</a>
+      </div>
+
+      {/* Mock decorativo del editor. La clase `play` arranca la secuencia
+          "escribe → renderiza"; sin ella (reduced-motion o sin JS) se ve
+          completo y estático. */}
+      <div class="mock play" aria-hidden="true">
+        <div class="mock-bar">
+          <span></span><span></span><span></span>
+          <em>cv.md</em>
+        </div>
+        <div class="mock-body">
+          <div class="mock-code">
+            <span class="ln" style="--i:0">{t('landing.mock.name', lang)}</span>
+            <span class="ln" style="--i:1">{t('landing.mock.title', lang)}</span>
+            <span class="ln" style="--i:2">{t('landing.mock.email', lang)}</span>
+            <span class="ln" style="--i:3"></span>
+            <span class="ln" style="--i:4">{t('landing.mock.exp', lang)}</span>
+            <span class="ln" style="--i:5">{t('landing.mock.company', lang)}</span>
+            <span class="ln" style="--i:6">{t('landing.mock.role', lang)}</span>
+            <span class="ln" style="--i:7">{t('landing.mock.win1', lang)}</span>
+            <span class="ln" style="--i:8">{t('landing.mock.win2', lang)}</span>
+          </div>
+          <div class="mock-page">
+            <div class="mock-sheet">
+              <b>{t('landing.mock.sheetName', lang)}</b>
+              <i></i>
+              <i class="short"></i>
+              <u>{t('landing.mock.sheetExp', lang)}</u>
+              <i></i>
+              <i></i>
+              <i class="short"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Por qué el formato le sienta bien a un lector automático. Honestidad
+        primero: no certificamos ningún ATS concreto (Ronda 13). */}
+    <section class="ats" aria-labelledby="ats-title">
+      <h2 id="ats-title">{t('landing.ats.title', lang)}</h2>
+      <div class="ats-grid">
+        <article class="ats-card">
+          <h3>{t('landing.ats.1.title', lang)}</h3>
+          <p>{t('landing.ats.1.body', lang)}</p>
+        </article>
+        <article class="ats-card">
+          <h3>{t('landing.ats.2.title', lang)}</h3>
+          <p>{t('landing.ats.2.body', lang)}</p>
+        </article>
+        <article class="ats-card">
+          <h3>{t('landing.ats.3.title', lang)}</h3>
+          <p>{t('landing.ats.3.body', lang)}</p>
+        </article>
+      </div>
+      <p class="ats-note">{t('landing.ats.note', lang)}</p>
+    </section>
+  </div>
+</Layout>
+
+<script>
+  // Bucle de la animación del mock: reinicia la secuencia cada 4,8 s.
+  // Con `prefers-reduced-motion` se detiene y se deja el mock completo.
+  const mock = document.querySelector<HTMLElement>('.mock');
+  if (mock) {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let timer = 0;
+    const play = () => {
+      mock.classList.remove('play');
+      void mock.offsetWidth; // reflow: fuerza el reinicio de las animaciones
+      mock.classList.add('play');
+    };
+    const sync = () => {
+      window.clearInterval(timer);
+      if (mq.matches) {
+        mock.classList.remove('play');
+        return;
+      }
+      play();
+      timer = window.setInterval(play, 4800);
+    };
+    mq.addEventListener('change', sync);
+    sync();
+  }
+</script>
+
+<style>
+  /* El hero deja de ser "pantalla única" (Ronda 13): ahora encabeza una
+     página con scroll. `safe center` evita el bug clásico del flex que
+     corta el contenido por arriba cuando es más alto que el viewport;
+     los navegadores sin soporte se quedan con el `center` anterior. */
+  .hero-page {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    justify-content: safe center;
+    padding: 44px 24px 56px;
+  }
+
+  .ats {
+    width: min(880px, 100%);
+    margin-top: 52px;
+    text-align: left;
+  }
+  .ats h2 {
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .ats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .ats-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px 18px;
+  }
+  .ats-card h3 {
+    font-size: 14.5px;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .ats-card p {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--text-2);
+    margin: 0;
+  }
+  .ats-note {
+    margin: 16px auto 0;
+    max-width: 62ch;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+</style>

@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { t } from '../i18n/server';
+
+// GitHub Pages sirve esta página para CUALQUIER URL rota del proyecto, así que
+// se renderiza una sola vez (en español, el x-default) y sale del índice.
+// El enlace al inicio lleva `base`: la 404 puede aparecer bajo cualquier ruta.
+const lang = 'es';
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+---
+<Layout lang={lang} titleKey="meta.title.404" descKey="meta.desc.404" noindex>
+  <div class="container notfound">
+    <p class="code" aria-hidden="true">404</p>
+    <h1>{t('notfound.title', lang)}</h1>
+    <p class="lead">{t('notfound.lead', lang)}</p>
+    <a class="btn btn-primary btn-lg" href={`${base}/`}>{t('notfound.home', lang)}</a>
+  </div>
+</Layout>
+
+<style>
+  .notfound {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 6px;
+  }
+  .notfound .code {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--accent-2);
+    opacity: 0.55;
+  }
+  .notfound h1 { margin: 0 0 6px; font-size: 26px; }
+  .notfound .lead { margin: 0 0 22px; color: var(--muted); max-width: 46ch; }
+</style>

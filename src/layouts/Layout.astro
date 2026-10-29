@@ -2,7 +2,7 @@
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { t } from '../i18n/server';
-import { dict } from '../i18n/dict';
+import { type DictKey, type Lang } from '../i18n/dict';
 // CSS global, extraído de este mismo fichero (Ronda 5). El orden de los
 // imports es el orden de la cascada original: no reordenar a la ligera.
 import '../styles/tokens.css';
@@ -12,45 +12,94 @@ import '../styles/landing.css';
 import '../styles/editor.css';
 import '../styles/content.css';
 import '../styles/responsive.css';
+
 interface Props {
-  /** Clave del diccionario para <title>; el JS la actualiza al cambiar idioma.
-      (`import type` rompe el compilador de Astro 5.18.2 → se infiere de `dict`.) */
-  titleKey: keyof typeof dict;
+  /** Idioma de ESTA ruta: el español vive en la raíz, el inglés bajo /en/. */
+  lang: Lang;
+  /** Clave del diccionario para <title> y <meta description> de la página. */
+  titleKey: DictKey;
+  descKey: DictKey;
+  /** Bloque schema.org propio de la página, si tiene (landing, privacy). */
+  jsonLd?: Record<string, unknown>;
+  /** Fuera del índice (404 y cualquier página interna). */
+  noindex?: boolean;
 }
-const { titleKey } = Astro.props;
+
+const { lang, titleKey, descKey, jsonLd, noindex = false } = Astro.props;
+
+const title = t(titleKey, lang);
+const desc = t(descKey, lang);
+
+// --- URL canónica + alternativas por idioma ---------------------------------
+// ES en la raíz del sitio (/cv-web/editor/) y EN bajo /en/ (/cv-web/en/editor/):
+// la misma página existe en las dos URLs y cada una es canónica de sí misma.
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '') || '';
+const path = Astro.url.pathname;
+const rel = (path.startsWith(`${base}/en/`) ? path.slice(base.length + 3) : path.slice(base.length)) || '/';
+const esPath = `${base}${rel}`;
+const enPath = `${base}/en${rel}`;
+
+const abs = (p: string) => new URL(p, Astro.site ?? 'https://neteumbra.github.io').href;
+const canonical = abs(lang === 'en' ? enPath : esPath);
+const alternates = { es: abs(esPath), en: abs(enPath) };
+const ogImage = abs(`${base}/img/og${lang === 'en' ? '.en' : ''}.png`);
+
+const jsonLdHtml = jsonLd
+  ? JSON.stringify({ '@context': 'https://schema.org', ...jsonLd }).replace(/</g, '\\u003c')
+  : undefined;
 ---
 <!doctype html>
-<html lang="es" data-doc-title={titleKey}>
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content={t('meta.desc')}
-      data-i18n-content="meta.desc"
-    />
+    <meta name="description" content={desc} />
+    {noindex && <meta name="robots" content="noindex" />}
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0d1117" />
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}/favicon.svg`} />
-    <title>{t(titleKey)}</title>
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+
+    {/* SEO: canónica + alternativas por idioma (ES = x-default). Las páginas
+        noindex (404) no declaran ni canónica ni alternativas: sus URLs no
+        existen como tal y sólo ensuciarían el HTML. */}
+    {!noindex && <link rel="canonical" href={canonical} />}
+    {!noindex && <link rel="alternate" hreflang="es" href={alternates.es} />}
+    {!noindex && <link rel="alternate" hreflang="en" href={alternates.en} />}
+    {!noindex && <link rel="alternate" hreflang="x-default" href={alternates.es} />}
+
+    {/* Tarjeta al compartir (Open Graph + Twitter) */}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="cv-web" />
+    <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'es_ES'} />
+    <meta property="og:locale:alternate" content={lang === 'en' ? 'es_ES' : 'en_US'} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="cv-web" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <title>{title}</title>
+    {jsonLdHtml && <script type="application/ld+json" set:html={jsonLdHtml} />}
   </head>
   <body>
-    <Navbar />
+    <Navbar lang={lang} />
     <main class="page">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
 
     <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <script>
-      // El i18n y los toasts viven en módulos TS (Ronda 6); aquí sólo se arrancan.
-      import { initI18n } from '../i18n/lang';
+      // El i18n en cliente desapareció en la Ronda 13: el idioma lo decide la
+      // URL y el HTML sale ya traducido del build. Aqu sólo se arrancan toasts.
       import { initToasts } from '../lib/toast';
-
-      initI18n();
       initToasts();
     </script>
   </body>
 </html>
-

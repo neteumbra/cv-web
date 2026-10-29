@@ -73,12 +73,16 @@
   .prose ul, .prose ol { margin: 0 0 14px; padding-left: 22px; }
   .prose li { margin-bottom: 6px; }
   .prose li::marker { color: var(--muted); }
-  .prose a {
+  /* Los enlaces del texto se subrayan; los botones-enlace (`a.btn`, p. ej. el
+     de Ko-fi) no heredan ese estilo: `.prose a` les ganaba por especificidad
+     (0,1,1 > 0,1,0) y el botón salía azul y subrayado, y en hover el texto se
+     ponía blanco sobre azul (Ronda 12). Con `:not(.btn)` cada cosa va a lo suyo. */
+  .prose a:not(.btn) {
     color: var(--accent-2);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
-  .prose a:hover { color: var(--text); }
+  .prose a:not(.btn):hover { color: var(--text); }
   .prose strong { color: var(--text); }
   .prose code {
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;

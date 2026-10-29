@@ -1,13 +1,13 @@
-import { dict, type DictKey } from './dict';
+import { dict, type DictKey, type Lang } from './dict';
 
 /**
- * Texto por defecto (ES) de una clave, para renderizarlo dentro de los `.astro`.
+ * Texto de una clave para el idioma de la página que se está renderizando.
  *
- * El HTML del build sale así de la MISMA fuente que el i18n en cliente
- * (`dict.ts`): no hay texto duplicado que el JS pisa al arrancar y cualquier
- * cambio de copy se hace en un solo sitio. `data-i18n` sigue presente para que
- * `apply()` pueda cambiar el idioma en caliente.
+ * El idioma ya no es un estado de cliente: lo decide la **ruta** (ES en la
+ * raíz, EN bajo `/en/`) y este `t()` se ejecuta en el build. Cada página le
+ * pasa su `lang` al Layout y a sus componentes; no hay `data-i18n` que
+ * reescribir en el navegador.
  */
-export function t(key: DictKey): string {
-  return dict[key].es;
+export function t(key: DictKey, lang: Lang): string {
+  return dict[key][lang];
 }

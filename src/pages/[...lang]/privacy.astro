@@ -1,0 +1,125 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DonateButton from '../../components/DonateButton.astro';
+import { t } from '../../i18n/server';
+import { type Lang } from '../../i18n/dict';
+import { STATIC_LANG_PATHS } from '../../i18n/routes';
+
+export const getStaticPaths = () => STATIC_LANG_PATHS;
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+// FAQ visible + JSON-LD salen de las MISMAS claves del diccionario: lo que
+// ve el usuario y lo que lee Google no puede desincronizarse.
+const faq = [
+  { qKey: 'privacy.q1', aKeys: ['privacy.a1', 'privacy.a1b'] },
+  { qKey: 'privacy.q2', aKeys: ['privacy.a2', 'privacy.a2b'] },
+  { qKey: 'privacy.q3', aKeys: ['privacy.a3'] },
+  { qKey: 'privacy.q4', aKeys: ['privacy.a4'] },
+  { qKey: 'privacy.q5', aKeys: ['privacy.a5'] },
+  { qKey: 'privacy.q6', aKeys: ['privacy.a6', 'privacy.a6b'] },
+] as const;
+
+const jsonLd = {
+  '@type': 'FAQPage',
+  mainEntity: faq.map(({ qKey, aKeys }) => ({
+    '@type': 'Question',
+    name: t(qKey, lang),
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: aKeys.map((k) => t(k, lang)).join(' '),
+    },
+  })),
+};
+---
+<Layout lang={lang} titleKey="meta.title.privacy" descKey="meta.desc.privacy" jsonLd={jsonLd}>
+  <div class="container">
+    <header class="page-head">
+      <h1>{t('privacy.title', lang)}</h1>
+      <p class="lead">{t('privacy.lead', lang)}</p>
+    </header>
+
+    {/* La respuesta a la pregunta que todo el mundo se hace, antes que nada */}
+    <section class="summary">
+      <span class="summary-label">{t('privacy.summary.title', lang)}</span>
+      <p>{t('privacy.summary.body', lang)}</p>
+    </section>
+
+    <article class="prose faq">
+      {faq.map(({ qKey, aKeys }) => (
+        <section class="qa">
+          <h2>{t(qKey, lang)}</h2>
+          {aKeys.map((aKey) => <p>{t(aKey, lang)}</p>)}
+        </section>
+      ))}
+    </article>
+
+    <aside class="callout">
+      <h2>{t('privacy.donate.title', lang)}</h2>
+      <p>{t('privacy.donate.body', lang)}</p>
+      <DonateButton lang={lang} />
+    </aside>
+  </div>
+</Layout>
+
+<style>
+  /* Resumen "en corto": filete verde de éxito, para que se lea de un vistazo */
+  .summary {
+    margin: 0 0 26px;
+    padding: 16px 18px;
+    background: var(--green-soft);
+    border: 1px solid rgba(63, 185, 80, 0.35);
+    border-left: 3px solid var(--green-text);
+    border-radius: var(--radius);
+  }
+  .summary-label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--green-text);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .summary p { margin: 0; color: var(--text); font-size: 15px; line-height: 1.6; }
+
+  /* FAQ: numeración automática en el propio <h2> y sin filete superior
+     (el número ya hace de separador visual entre preguntas) */
+  .faq { counter-reset: qa; }
+  .faq .qa h2 {
+    counter-increment: qa;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 26px 0 10px;
+    padding-top: 0;
+    border-top: 0;
+    font-size: 17px;
+  }
+  .faq .qa h2::before {
+    content: counter(qa);
+    flex: none;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent-2);
+    font-size: 12.5px;
+    font-weight: 700;
+  }
+  .faq .qa:first-child h2 { margin-top: 0; }
+
+  /* Callout de donación: filete de acento y margen propio al cerrar el artículo */
+  .callout {
+    margin-top: 32px;
+    padding: 18px 20px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+  }
+  .callout h2 { margin: 0 0 8px; font-size: 17px; }
+  .callout p { margin: 0 0 14px; color: var(--text-2); }
+</style>

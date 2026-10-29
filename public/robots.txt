@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Sin restricciones: no hay rutas privadas ni páginas que ocultar.
+# (La 404 lleva noindex en su propio HTML.)
+
+Sitemap: https://neteumbra.github.io/cv-web/sitemap.xml

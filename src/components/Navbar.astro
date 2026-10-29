@@ -1,61 +1,81 @@
 ---
 import { t } from '../i18n/server';
-const base = import.meta.env.BASE_URL;
-const norm = (s: string) => s.replace(/\/+$/, '');
-const current = norm(Astro.url.pathname);
-const root = norm(base);
-const isActive = (page: string) => current === `${root}/${page}`;
+import { type Lang } from '../i18n/dict';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+// Ruta de ESTA página relativa al sitio: '/privacy/' o '/en/privacy/' → '/privacy/'
+const here = Astro.url.pathname;
+const relPath = (here.startsWith(`${base}/en/`) ? here.slice(base.length + 3) : here.slice(base.length)) || '/';
+/** Enlace a una página del sitio en el idioma de ESTA página. */
+const page = (p: string) => (lang === 'en' ? `${base}/en${p}` : `${base}${p}`);
+
+const current = here.replace(/\/+$/, '');
+const isActive = (p: string) => current === page(p).replace(/\/+$/, '');
 ---
 <nav class="navbar">
-  <a class="brand" href={`${base}/`} aria-label="cv-web">
+  <a class="brand" href={lang === 'en' ? `${base}/en/` : `${base}/`} aria-label="cv-web">
     <img src={`${base}/favicon.svg`} alt="" width="20" height="20" />
     <span>cv-web</span>
   </a>
 
   <ul class="links" id="nav-links">
     <li>
-      <a
-        href={`${base}/editor/`}
-        data-i18n="nav.editor"
-        aria-current={isActive('editor') ? 'page' : undefined}>{t('nav.editor')}</a>
+      <a href={page('/editor/')} aria-current={isActive('/editor/') ? 'page' : undefined}>
+        {t('nav.editor', lang)}
+      </a>
     </li>
     <li>
-      <a
-        href={`${base}/ai/`}
-        data-i18n="nav.ai"
-        aria-current={isActive('ai') ? 'page' : undefined}>{t('nav.ai')}</a>
+      <a href={page('/ai/')} aria-current={isActive('/ai/') ? 'page' : undefined}>
+        {t('nav.ai', lang)}
+      </a>
     </li>
     <li>
-      <a
-        href={`${base}/credits/`}
-        data-i18n="nav.credits"
-        aria-current={isActive('credits') ? 'page' : undefined}>{t('nav.credits')}</a>
+      <a href={page('/credits/')} aria-current={isActive('/credits/') ? 'page' : undefined}>
+        {t('nav.credits', lang)}
+      </a>
     </li>
   </ul>
 
-  {/* Grupo derecho: control segmentado [Docs][idioma][menú móvil] */}
-  <div class="nav-actions" role="group" aria-label={t('nav.actions')} data-i18n-aria="nav.actions">
+  {/* Grupo derecho: [Docs][idioma][menú móvil]. El idioma son ENLACES
+      normales (Ronda 13): cada uno apunta a esta misma página en el otro
+      idioma; el activo se marca con aria-current y no navega a ningún sitio. */}
+  <div class="nav-actions" role="group" aria-label={t('nav.actions', lang)}>
     <a
       class="seg"
-      href={`${base}/docs/`}
-      data-i18n="nav.docs"
-      aria-current={isActive('docs') ? 'page' : undefined}>{t('nav.docs')}</a>
+      href={page('/docs/')}
+      aria-current={isActive('/docs/') ? 'page' : undefined}>{t('nav.docs', lang)}</a>
 
-    <button
-      id="lang-toggle"
-      class="seg"
-      type="button"
-      aria-label={t('nav.lang')}
-      data-i18n-aria="nav.lang"
-    >
-      <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="9.25" />
-        <path d="M2.75 12h18.5" />
-        <path d="M12 2.75a14.5 14.5 0 0 1 3.6 9.25 14.5 14.5 0 0 1-3.6 9.25 14.5 14.5 0 0 1-3.6-9.25A14.5 14.5 0 0 1 12 2.75z" />
-      </svg>
-      <span id="lang-label">ES</span>
-    </button>
+    {/* Selector de idioma: dos ENLACES normales (Ronda 13), uno por idioma,
+        cada uno a esta misma página en su URL. El activo se marca con
+        aria-current y no aporta navegación nueva: sólo se rastrean y se
+        comparten las dos versiones reales del contenido. */}
+    {(['es', 'en'] as const).map((code) => {
+      const href = code === 'en' ? `${base}/en${relPath}` : `${base}${relPath}`;
+      const active = code === lang;
+      return (
+        <a
+          class="seg lang-seg"
+          href={href}
+          hreflang={code}
+          lang={code}
+          aria-current={active ? 'page' : undefined}
+          aria-label={code === 'es' ? 'Español' : 'English'}
+        >
+          <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9.25" />
+            <path d="M2.75 12h18.5" />
+            <path d="M12 2.75a14.5 14.5 0 0 1 3.6 9.25 14.5 14.5 0 0 1-3.6 9.25 14.5 14.5 0 0 1-3.6-9.25A14.5 14.5 0 0 1 12 2.75z" />
+          </svg>
+          <span>{code.toUpperCase()}</span>
+        </a>
+      );
+    })}
 
     <button
       class="seg nav-toggle"
@@ -63,8 +83,7 @@ const isActive = (page: string) => current === `${root}/${page}`;
       type="button"
       aria-expanded="false"
       aria-controls="nav-links"
-      aria-label={t('nav.menu')}
-      data-i18n-aria="nav.menu"
+      aria-label={t('nav.menu', lang)}
     >
       <svg class="ico icon-open" width="16" height="16" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">

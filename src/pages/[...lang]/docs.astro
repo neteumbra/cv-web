@@ -1,0 +1,45 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { t } from '../../i18n/server';
+import { STATIC_LANG_PATHS } from '../../i18n/routes';
+import { type Lang } from '../../i18n/dict';
+import FormatDocEs from '../../../docs/formato-cv.md';
+import FormatDocEn from '../../../docs/formato-cv.en.md';
+
+export const getStaticPaths = () => STATIC_LANG_PATHS;
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+// Cada idioma tiene su fichero en el repo: en la ruta EN sólo se renderiza el
+// documento EN (Ronda 13). Antes los dos estaban en el DOM a la vez y un
+// script ocultaba el otro para no duplicar ids.
+const RAW = lang === 'en'
+  ? 'https://github.com/neteumbra/cv-web/blob/main/docs/formato-cv.en.md'
+  : 'https://github.com/neteumbra/cv-web/blob/main/docs/formato-cv.md';
+---
+<Layout lang={lang} titleKey="meta.title.docs" descKey="meta.desc.docs">
+  <div class="container">
+    <header class="page-head">
+      <h1>{t('docs.title', lang)}</h1>
+      <p class="lead">{t('docs.lead', lang)}</p>
+      <p class="doc-source">
+        <a href={RAW} target="_blank" rel="noopener noreferrer">{t('docs.raw', lang)}</a>
+      </p>
+    </header>
+
+    <article class="prose">
+      {lang === 'en' ? <FormatDocEn /> : <FormatDocEs />}
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .doc-source { margin: 14px 0 0; }
+  .doc-source a {
+    color: var(--muted);
+    font-size: 13px;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .doc-source a:hover { color: var(--accent-2); border-bottom-color: var(--accent-2); }
+</style>

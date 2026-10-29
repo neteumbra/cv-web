@@ -1,0 +1,30 @@
+---
+// Botón de donación único (Ko-fi). En /credits y /privacy, siempre en estilo
+// primario: es la acción destacada de esas páginas. Símbolo oficial de Ko-fi
+// en local (public/img/kofi-symbol.svg): la página no pide nada a ko-fi.com
+// salvo al pulsar (regla 5 de privacidad).
+import { t } from '../i18n/server';
+import { type Lang } from '../i18n/dict';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+---
+<a
+  class="btn btn-primary"
+  href="https://ko-fi.com/neteumbra"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <img
+    class="kofi-ico"
+    src={`${base}/img/kofi-symbol.svg`}
+    alt=""
+    aria-hidden="true"
+    width="20"
+    height="16"
+  />
+  <span>{t('donate.kofi', lang)}</span>
+</a>

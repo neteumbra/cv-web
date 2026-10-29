@@ -7,7 +7,7 @@ import { dict, type DictKey, type Lang } from './dict';
  * de Layout.astro (no React) no arrastre React a su bundle.
  */
 
-/** Idioma actual; se actualiza solo al cambiarlo (evento `cv-lang`). */
+/** Idioma de la página (el de la URL, fijado en el build). */
 export function useLang(): Lang {
   return useStore($lang);
 }

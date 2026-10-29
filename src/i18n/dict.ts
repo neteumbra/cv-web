@@ -5,19 +5,63 @@ export type Entry = { es: string; en: string };
 /** Diccionario ES/EN de toda la UI. Fuente de verdad para textos traducibles. */
 export const dict = {
 	// Meta del documento (título de pestaña y description) — se renderiza en el
-	// HTML del build y se vuelve a aplicar en cliente al cambiar de idioma.
+	// HTML del build para el idioma de la ruta. La description es POR PÁGINA:
+	// una sola global mataba el CTR de /credits y /privacy en los resultados.
 	'meta.title.landing': {
-		es: 'cv-web — Tu CV en Markdown con PDF al instante',
-		en: 'cv-web — Your CV in Markdown, instant PDF',
+		es: 'Crear CV ATS gratis — editor Markdown con PDF | cv-web',
+		en: 'Free ATS Resume Builder — Markdown Editor with PDF | cv-web',
 	},
-	'meta.title.editor': { es: 'cv-web — Editor', en: 'cv-web — Editor' },
-	'meta.title.ai': { es: 'cv-web — Instrucciones para IA', en: 'cv-web — AI Instructions' },
-	'meta.title.docs': { es: 'cv-web — Docs', en: 'cv-web — Docs' },
-	'meta.title.credits': { es: 'cv-web — Créditos', en: 'cv-web — Credits' },
-	'meta.title.privacy': { es: 'cv-web — Privacidad', en: 'cv-web — Privacy' },
-	'meta.desc': {
-		es: 'Editor de CV en Markdown con previsualización PDF en vivo. Todo en tu navegador.',
-		en: 'Markdown CV editor with live PDF preview. Everything in your browser.',
+	'meta.title.editor': {
+		es: 'Editor de CV ATS — escribe y mira el PDF | cv-web',
+		en: 'ATS Resume Editor — write and watch the PDF | cv-web',
+	},
+	'meta.title.ai': {
+		es: 'Convertir un CV antiguo a formato ATS con IA | cv-web',
+		en: 'Turn an old CV into an ATS format with AI | cv-web',
+	},
+	'meta.title.docs': {
+		es: 'Formato del CV (Markdown) — especificación | cv-web',
+		en: 'CV format (Markdown) — specification | cv-web',
+	},
+	'meta.title.credits': { es: 'Créditos y licencia — cv-web', en: 'Credits and license — cv-web' },
+	'meta.title.privacy': {
+		es: 'Privacidad: tu CV no sale de tu navegador | cv-web',
+		en: 'Privacy: your CV never leaves your browser | cv-web',
+	},
+	'meta.title.404': { es: 'Página no encontrada — cv-web', en: 'Page not found — cv-web' },
+	'notfound.title': { es: 'Página no encontrada', en: 'Page not found' },
+	'notfound.lead': {
+		es: 'Esta URL no existe. Puede que la hayas escrito a mano o que un enlace viejo te haya traído hasta aquí.',
+		en: 'This URL does not exist. You may have typed it, or an old link brought you here.',
+	},
+	'notfound.home': { es: 'Volver al inicio', en: 'Back to home' },
+	'meta.desc.404': {
+		es: 'Página no encontrada.',
+		en: 'Page not found.',
+	},
+	'meta.desc.landing': {
+		es: 'Crea tu CV ATS gratis: escribes en Markdown y descargas un PDF de una sola columna y texto seleccionable, el formato que los sistemas de selección leen mejor. Sin cuenta y sin subirlo a ningún servidor.',
+		en: 'Build a free ATS-friendly CV: write in Markdown and download a single-column PDF with selectable text, the format automated screeners read best. No account, nothing uploaded.',
+	},
+	'meta.desc.editor': {
+		es: 'Editor de CV en Markdown con el PDF renderizándose en vivo. Se guarda en tu navegador y el PDF se genera en tu equipo.',
+		en: 'Markdown CV editor with the PDF rendering live. Saved in your browser, PDF built on your machine.',
+	},
+	'meta.desc.ai': {
+		es: 'Pega tu CV de Word, PDF o LinkedIn en cualquier IA y recibe el markdown exacto que este editor entiende, listo para pegar.',
+		en: 'Paste your Word, PDF or LinkedIn CV into any AI and get the exact markdown this editor understands, ready to paste.',
+	},
+	'meta.desc.docs': {
+		es: 'Especificación del formato Markdown del CV: secciones, entradas, fechas, listas, negrita y \\break para paginar.',
+		en: 'Specification of the CV Markdown format: sections, entries, dates, lists, bold and \\break for page breaks.',
+	},
+	'meta.desc.credits': {
+		es: 'cv-web es software libre bajo GPL-3.0. El motor deriva de xthecapx/cv-generator, con todo el crédito original intacto.',
+		en: 'cv-web is free software under GPL-3.0. The engine is derived from xthecapx/cv-generator, all original credit intact.',
+	},
+	'meta.desc.privacy': {
+		es: 'Tu CV no sale de tu navegador: sin cuentas, sin cookies de rastreo, sin analíticas y sin servidores donde se guarde nada.',
+		en: 'Your CV never leaves your browser: no accounts, no tracking cookies, no analytics, no servers storing anything.',
 	},
 
 	// Navbar
@@ -25,9 +69,8 @@ export const dict = {
 	'nav.docs': { es: 'Docs', en: 'Docs' },
 	'nav.ai': { es: 'Instrucciones IA', en: 'AI Instructions' },
 	'nav.credits': { es: 'Créditos', en: 'Credits' },
-	// Nombres accesibles del grupo segmentado de la navbar (data-i18n-aria)
+	// Nombres accesibles del grupo segmentado de la navbar
 	'nav.actions': { es: 'Acciones', en: 'Actions' },
-	'nav.lang': { es: 'Cambiar idioma', en: 'Change language' },
 	'nav.menu': { es: 'Menú', en: 'Menu' },
 
 	// Footer
@@ -42,77 +85,123 @@ export const dict = {
 		en: 'View the privacy policy',
 	},
 
-	// Privacidad (/privacy) — lenguaje llano, formato de preguntas y respuestas
+	// Privacidad (/privacy) — lenguaje llano, formato de preguntas y respuestas.
+	// Orden pensado para leerse entero en 30 segundos: primero la respuesta
+	// corta (privacy.summary.*), después las preguntas de arriba abajo.
 	'privacy.title': { es: 'Privacidad', en: 'Privacy' },
 	'privacy.lead': {
-		es: 'Sin letra pequeña: esto es todo lo que hacemos (y no hacemos) con tus datos.',
-		en: 'No fine print: this is everything we do (and do not do) with your data.',
+		es: 'Un CV es dato personal: teléfono, correo, dirección, trayectoria. Aquí te explicamos, sin rodeos, exactamente qué ocurre con el tuyo.',
+		en: 'A CV is personal data: phone, email, address, work history. Here is, in plain words, exactly what happens to yours.',
+	},
+	'privacy.summary.title': { es: 'La respuesta corta', en: 'The short answer' },
+	'privacy.summary.body': {
+		es: 'Tu CV nunca sale de tu navegador. No hay cuentas, ni cookies de rastreo, ni analíticas, ni servidores donde se guarde nada: escribes en tu equipo y el PDF se genera en tu equipo.',
+		en: 'Your CV never leaves your browser. No accounts, no tracking cookies, no analytics, no servers storing anything: you type on your machine and the PDF is built on your machine.',
 	},
 	'privacy.q1': {
-		es: '¿Se sube mi CV a internet?',
-		en: 'Is my CV uploaded to the internet?',
+		es: '¿Se sube mi CV a algún servidor?',
+		en: 'Is my CV uploaded to any server?',
 	},
 	'privacy.a1': {
-		es: 'No. Lo que escribas en esta web nunca sale de tu navegador: esta web no tiene servidor, no hay a dónde subirlo.',
-		en: 'No. What you write on this site never leaves your browser: this site has no server, there is nowhere to upload it to.',
+		es: 'No. Esta web no tiene servidor propio al que subirlo: el markdown que escribes y el PDF que se genera se quedan en tu navegador.',
+		en: 'No. This site has no server of its own to upload it to: the markdown you write and the PDF it builds stay in your browser.',
 	},
 	'privacy.a1b': {
-		es: 'Si cierras la pestaña, tu CV sigue ahí: lo guarda tu propio navegador, en tu equipo.',
-		en: 'If you close the tab, your CV is still there: your own browser stores it, on your machine.',
+		es: 'Puedes desconectarte de internet con la página abierta y seguir trabajando sin más: el editor no necesita red.',
+		en: 'You can go offline with the page open and keep working: the editor does not need the network.',
 	},
-	'privacy.q2': { es: '¿Me estás siguiendo?', en: 'Are you tracking me?' },
+	'privacy.q2': {
+		es: '¿Dónde se guarda entonces?',
+		en: 'Where is it stored, then?',
+	},
 	'privacy.a2': {
-		es: 'No hay cookies de seguimiento, analíticas, anuncios ni cuentas. No sabemos quién eres ni qué escribes, y no existe ningún registro que consultar.',
-		en: 'No tracking cookies, no analytics, no ads, no accounts. We do not know who you are or what you write, and there is no log to look into.',
+		es: 'En el almacenamiento local de tu navegador, en este mismo equipo. Es lo mismo que hace cualquier editor local: el dato se queda donde lo estás escribiendo.',
+		en: 'In your browser’s local storage, on this same machine. Same as any local editor: the data stays where you are typing it.',
+	},
+	'privacy.a2b': {
+		es: 'Ese espacio sólo lo escribe y lee esta web desde tu navegador. Si lo borras, se acabó: no hay copia en ningún otro sitio.',
+		en: 'Only this site reads and writes that space, through your browser. If you clear it, it is gone: there is no copy anywhere else.',
 	},
 	'privacy.q3': {
-		es: '¿Por qué tanta preocupación por la privacidad?',
-		en: 'Why so much concern about privacy?',
+		es: '¿Usáis cookies, rastreadores o analíticas?',
+		en: 'Do you use cookies, trackers or analytics?',
 	},
 	'privacy.a3': {
-		es: 'Un CV lleva datos personales: teléfono, correo, dirección, trayectoria… Merecen el mismo cuidado que si los tuvieras en papel.',
-		en: 'A CV carries personal data: phone, email, address, work history… It deserves the same care as if you had it on paper.',
-	},
-	'privacy.a3b': {
-		es: 'Y el código es público: cualquiera puede abrirlo y comprobar, línea a línea, que no se envía nada.',
-		en: 'And the code is public: anyone can open it and verify, line by line, that nothing is sent.',
+		es: 'Ninguna. Cero cookies de terceros, cero scripts de medición, cero anuncios y cero cuentas de usuario. No es que guardemos poco: no existen métricas de uso porque nunca se recogieron.',
+		en: 'None. Zero third-party cookies, zero measuring scripts, zero ads, zero user accounts. It is not that we keep little: usage metrics do not exist because they were never collected.',
 	},
 	'privacy.q4': {
-		es: '¿Qué es lo único que sale a internet?',
-		en: 'What is the only thing that leaves?',
+		es: '¿Entonces no sabéis quién soy?',
+		en: 'So you do not know who I am?',
 	},
-	'privacy.a4.1': {
-		es: 'Al abrir esta web: quien la aloja (GitHub Pages) ve tu dirección IP, como en cualquier página. Nosotros no la vemos nunca.',
-		en: 'When you open this site: the host (GitHub Pages) sees your IP address, as with any site. We never see it.',
+	'privacy.a4': {
+		es: 'Nada de nada. El código entero está público en GitHub: puedes abrirlo y comprobar, línea a línea, que no se envía ninguna petición a ningún sitio.',
+		en: 'Nothing at all. The whole code is public on GitHub: you can open it and check, line by line, that no request is sent anywhere.',
 	},
 	'privacy.q5': {
-		es: '¿Y si quiero borrarlo todo?',
-		en: 'And if I want to erase everything?',
+		es: '¿Y qué ve el que aloja la web?',
+		en: 'And what does the host see?',
 	},
 	'privacy.a5': {
-		es: 'Pulsa «↺ Reiniciar» en el editor o borra los datos del sitio desde tu navegador. No queda nada en ningún otro sitio, porque nunca hubo nada.',
-		en: 'Hit "↺ Reset" in the editor or clear the site data from your browser. Nothing is stored anywhere else, because there never was anything.',
+		es: 'GitHub Pages, al servir la página, ve tu dirección IP: lo mismo que cualquier sitio que visites. Esa IP llega a su servidor, no al nuestro, y no hay ningún registro nuestro que consultar.',
+		en: 'GitHub Pages sees your IP address when serving the page, like any site you visit. That IP reaches their server, not ours, and there is no log of ours to look into.',
 	},
-	'privacy.donate.title': { es: 'Una última cosa', en: 'One last thing' },
+	'privacy.q6': {
+		es: '¿Cómo borro todo?',
+		en: 'How do I erase everything?',
+	},
+	'privacy.a6': {
+		es: 'Pulsa «↺ Reiniciar» en la barra del editor para volver al CV de ejemplo, o borra los datos del sitio desde los ajustes de tu navegador.',
+		en: 'Hit "↺ Reset" in the editor toolbar to go back to the sample CV, or clear the site data from your browser settings.',
+	},
+	'privacy.a6b': {
+		es: 'No queda nada pendiente en ningún otro sitio, porque nunca salió de tu equipo.',
+		en: 'Nothing is pending anywhere else, because it never left your machine.',
+	},
+	'privacy.donate.title': { es: '¿Te ha servido?', en: 'Did this help you?' },
 	'privacy.donate.body': {
-		es: 'Si esto te ha servido, puedes invitarme a un café ☕. Es opcional: el editor es y seguirá siendo gratis.',
-		en: 'If this was useful to you, you can buy me a coffee ☕. It is optional: the editor is and will stay free.',
+		es: 'El editor es gratuito, sin anuncios y sin planes de pago, y no vende tus datos a nadie (no hay datos que vender). Si te ha servido, invítame a un café ☕ para que siga vivo.',
+		en: 'The editor is free, with no ads and no paid plans, and it does not sell your data to anyone (there is no data to sell). If it helped you, buy me a coffee ☕ to keep it alive.',
 	},
 
-	// Landing (pantalla única)
+	// Landing (pantalla única) — keyword principal ES: «crear CV ATS»;
+	// EN: «ATS resume builder». El claim es comprobable (ver landing.ats.*).
 	'landing.hero.title': {
-		es: 'Tu CV en Markdown, con PDF al instante',
-		en: 'Your CV in Markdown, instant PDF',
+		es: 'Crea tu CV ATS en Markdown y descarga el PDF al instante',
+		en: 'Build your ATS resume in Markdown, download the PDF instantly',
 	},
 	'landing.hero.sub': {
-		es: 'Escribe a la izquierda y mira el PDF renderizarse a la derecha. Todo en tu navegador: sin servidores, sin cuentas y sin que nada salga de tu equipo.',
-		en: 'Write on the left and watch the PDF render on the right. Everything happens in your browser: no servers, no accounts, nothing leaves your machine.',
+		es: 'Escribe a la izquierda y mira el PDF renderizarse a la derecha. Sale un documento de una sola columna y texto seleccionable: el formato que los sistemas de selección automática leen sin ruido. Todo en tu navegador, sin cuenta y sin subirlo a ningún servidor.',
+		en: 'Write on the left and watch the PDF render on the right. You get a single-column document with selectable text: the format automated screeners read without noise. Everything in your browser, no account, nothing uploaded.',
 	},
-	'landing.cta': { es: 'Abrir el editor', en: 'Open the editor' },
-	'landing.badge': { es: 'Software libre', en: 'Free software' },
+	'landing.cta': { es: 'Empezar mi CV', en: 'Start my CV' },
+	'landing.badge': { es: 'Software libre · Sin registros', en: 'Free software · No sign-up' },
 	'landing.cta.ai': {
 		es: '¿Tienes un CV antiguo? Pídele a una IA que lo convierta',
 		en: 'Have an old CV? Have an AI convert it',
+	},
+
+	// Bloque "por qué este formato" — honestidad primero: no certificamos
+	// ningún ATS concreto; explicamos las decisiones de formato que sí controlamos.
+	'landing.ats.title': { es: 'Por qué este formato le sienta bien a un ATS', en: 'Why this format works well for an ATS' },
+	'landing.ats.note': {
+		es: 'No certificamos compatibilidad con ningún ATS concreto: nadie puede prometer eso de forma honesta. Lo que sí hacemos es cada decisión de formato que los lectores automáticos agradecen, y te la explicamos aquí.',
+		en: 'We do not certify compatibility with any specific ATS: nobody can honestly promise that. What we do is every formatting decision that automated readers like, and we explain each one here.',
+	},
+	'landing.ats.1.title': { es: 'Texto real, seleccionable', en: 'Real, selectable text' },
+	'landing.ats.1.body': {
+		es: 'El PDF se genera con texto, no con una imagen de la página: se puede seleccionar, copiar y buscar. Un extractor automático lee el contenido en lugar de adivinarlo.',
+		en: 'The PDF is built from text, not from a picture of the page: it can be selected, copied and searched. An automated extractor reads the content instead of guessing it.',
+	},
+	'landing.ats.2.title': { es: 'Una sola columna', en: 'A single column' },
+	'landing.ats.2.body': {
+		es: 'Sin tablas, cajas ni dos columnas: cada dato va en su línea, en el orden en que se lee. Nada de que el extractor lea «nombre» y «teléfono» pegados.',
+		en: 'No tables, boxes or two columns: every field on its own line, in reading order. No extractor reading your name and phone number jammed together.',
+	},
+	'landing.ats.3.title': { es: 'Encabezados y fechas estándar', en: 'Standard headings and dates' },
+	'landing.ats.3.body': {
+		es: 'Secciones con títulos reconocibles (EXPERIENCIA, FORMACIÓN, HABILIDADES) y fechas en un formato legible, para que la clasificación acierte más a la primera.',
+		en: 'Sections with recognizable headings (EXPERIENCE, EDUCATION, SKILLS) and dates in a readable format, so classification lands right the first time.',
 	},
 	// Mock animado del hero (decorativo pero visible: también se traduce)
 	'landing.mock.name': { es: '# Nombre', en: '# Name' },
@@ -180,41 +269,51 @@ export const dict = {
 
 	// Credits
 	'credits.title': { es: 'Créditos', en: 'Credits' },
+	'credits.badge': {
+		es: 'Software libre · GPL-3.0',
+		en: 'Free software · GPL-3.0',
+	},
 	'credits.lead': {
-		es: 'Este proyecto es software libre.',
-		en: 'This project is free software.',
+		es: 'cv-web es software libre: se puede leer, usar y modificar sin pedirle permiso a nadie. Esto es de dónde viene y quién lo hizo.',
+		en: 'cv-web is free software: you can read, use and modify it without asking anyone. Here is where it comes from and who made it.',
 	},
 	'credits.own.label': { es: 'Este proyecto', en: 'This project' },
 	'credits.own.body': {
-		es: 'cv-web es una reescritura independiente en Astro + React, publicada como software libre y disponible en GitHub.',
-		en: 'cv-web is an independent Astro + React rewrite, released as free software and available on GitHub.',
+		es: 'Editor de CV en Markdown con el PDF renderizándose en vivo, escrito en Astro y React. Sin servidor, sin cuentas y sin seguimiento: escribes en tu navegador y el PDF se genera ahí mismo.',
+		en: 'A Markdown CV editor with the PDF rendering live, written in Astro and React. No server, no accounts, no tracking: you type in your browser and the PDF is built right there.',
 	},
 	'credits.own.repo': {
-		es: 'Ver este repo en GitHub',
-		en: 'View this repo on GitHub',
+		es: 'Ver el código en GitHub',
+		en: 'View the code on GitHub',
 	},
 	'credits.original.label': {
-		es: 'Proyecto original',
-		en: 'Original project',
+		es: 'El motor, y de dónde viene',
+		en: 'The engine, and where it comes from',
 	},
-	// Fragmentos alrededor de los enlaces (data-i18n usa textContent, no HTML)
+	// Fragmentos alrededor de los enlaces del proyecto original (el texto se
+	// compone en la propia plantilla: son varios enlaces dentro de un párrafo)
 	'credits.body.before': {
-		es: 'El motor de CV (parser markdown y render PDF) de este proyecto deriva de ',
-		en: 'The CV engine (markdown parser and PDF renderer) of this project is derived from ',
+		es: 'El motor de CV (el parser de markdown y el renderizador del PDF) de este proyecto deriva de ',
+		en: 'The CV engine (the markdown parser and the PDF renderer) of this project is derived from ',
 	},
 	'credits.body.mid': { es: ', creado por ', en: ', created by ' },
 	'credits.body.after': {
 		es: '. Todo el crédito original es suyo.',
-		en: '. All original credit is theirs.',
+		en: '. All of the original credit is theirs.',
 	},
 	'credits.repo': {
-		es: 'Ver el repo original',
-		en: 'View the original repo',
+		es: 'Ver el proyecto original',
+		en: 'View the original project',
 	},
 	'credits.license.label': { es: 'Licencia', en: 'License' },
 	'credits.license': {
-		es: 'GPL-3.0. Software libre: puedes usarlo, modificarlo y redistribuirlo bajo los mismos términos.',
-		en: 'GPL-3.0. Free software: you can use, modify and redistribute it under the same terms.',
+		es: 'GPL-3.0. Puedes usarlo, copiarlo, modificarlo y redistribuirlo, siempre que mantengas la misma licencia y no borres los créditos.',
+		en: 'GPL-3.0. You may use, copy, modify and redistribute it, as long as you keep the same license and keep the credits.',
+	},
+	'credits.support.label': { es: '¿Te ha servido?', en: 'Did this help you?' },
+	'credits.support.body': {
+		es: 'No hay anuncios, ni cuentas de pago, ni funciones tras una suscripción: sólo este editor, y es gratis. Si te ha servido, puedes invítame a un café ☕.',
+		en: 'No ads, no paid accounts, no features behind a subscription: just this editor, and it is free. If it helped you, you can buy me a coffee ☕.',
 	},
 
 	// Editor toolbar (React)

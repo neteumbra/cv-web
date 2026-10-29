@@ -31,20 +31,28 @@ English**.
   hyperlinks in the PDF
 - Import / export `.md`
 - Automatic saving to `localStorage`
-- ES / EN toggle in the top bar (works on every page)
+- **Two languages, two URLs**: Spanish at the root, English under `/en/`
+  (the language is part of the route, so every page is pre-rendered in both)
 - **AI instructions**: a prompt that explains what to paste and what you will
   get back, plus a complete example CV
 - **No native dialogs**: every action gives feedback via toast or inline state
-- Donations via [Ko-fi](https://ko-fi.com/neteumbra) (modal in the footer)
+- Donations via [Ko-fi](https://ko-fi.com/neteumbra) (button on `/credits` and
+  `/privacy`)
 - Privacy page: everything is local, no cookies and no trackers
+- **SEO**: per-page titles/descriptions, canonical + `hreflang` pairs,
+  Open Graph/Twitter cards (1200×630 image per language), JSON-LD, `robots.txt`
+  and a static `sitemap.xml` — all without extra dependencies
 
 ## Pages
 
-- `/` — Home: one screen — what it is + call to action
+Each page exists in ES (root) and EN (`/en/…`):
+
+- `/` — Home: hero + why the format reads well for automated screeners
+  (single-column, selectable text, standard headings)
 - `/editor` — The markdown editor + PDF preview
-- `/docs` — Format specification in ES/EN (rendered from
-  [`docs/formato-cv.md`](docs/formato-cv.md) and
-  [`docs/formato-cv.en.md`](docs/formato-cv.en.md), following the selected
+- `/docs` — Format specification (rendered from
+  [`docs/formato-cv.md`](docs/formato-cv.md) or
+  [`docs/formato-cv.en.md`](docs/formato-cv.en.md), matching the route's
   language)
 - `/ai` — AI instructions (copyable prompt with a complete example CV)
 - `/credits` — Credits (this project and the original one)
@@ -86,8 +94,9 @@ Full example: [`src/data/default.md`](src/data/default.md).
 
 ```bash
 npm install
-npm run dev      # http://localhost:4321/cv-web
-npm run build    # builds dist/
+npm run dev      # http://localhost:4322/cv-web/ (Astro's default 4321 may be taken)
+npm run check    # type-checks .astro files
+npm run build    # builds dist/ — 12 pages (6 × ES/EN) + 404 + sitemap
 npm run preview
 ```
 

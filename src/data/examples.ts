@@ -7,7 +7,7 @@ import en from './default.en.md?raw';
  * guardado) y lo que restaura «↺ Reiniciar». Ambos ejemplos tienen la misma
  * estructura para que el parser y `cvToMarkdown` se comporten igual.
  *
- * El idioma vigente se lee con `readLang()` de `src/i18n/lang.ts` (una sola
- * fuente de verdad para toda la app).
+ * El idioma vigente se lee con `$lang` de `src/i18n/lang.ts` (una sola
+ * fuente de verdad para toda la app; el idioma lo decide la URL).
  */
 export const examples: Record<Lang, string> = { es, en };

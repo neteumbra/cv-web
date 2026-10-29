@@ -1,0 +1,18 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { STATIC_LANG_PATHS } from '../../i18n/routes';
+import { type Lang } from '../../i18n/dict';
+import Toolbar from '../../components/Toolbar.tsx';
+import Workspace from '../../components/Workspace.tsx';
+
+export const getStaticPaths = () => STATIC_LANG_PATHS;
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+---
+<Layout lang={lang} titleKey="meta.title.editor" descKey="meta.desc.editor">
+  <div class="editor-wrap">
+    {/* Las islas leen el idioma de `<html lang>` (fijado por esta ruta). */}
+    <Toolbar client:only="react" />
+    <Workspace client:only="react" />
+  </div>
+</Layout>
