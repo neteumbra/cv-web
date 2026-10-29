@@ -31,17 +31,17 @@ English**.
   hyperlinks in the PDF
 - Import / export `.md`
 - Automatic saving to `localStorage`
-- **Two languages, two URLs**: Spanish at the root, English under `/en/`
-  (the language is part of the route, so every page is pre-rendered in both)
+- **Two languages, two URLs**: Spanish at the root, English under `/en/` (the
+  language is part of the route, so every page is pre-rendered in both)
 - **AI instructions**: a prompt that explains what to paste and what you will
   get back, plus a complete example CV
 - **No native dialogs**: every action gives feedback via toast or inline state
 - Donations via [Ko-fi](https://ko-fi.com/neteumbra) (button on `/credits` and
   `/privacy`)
 - Privacy page: everything is local, no cookies and no trackers
-- **SEO**: per-page titles/descriptions, canonical + `hreflang` pairs,
-  Open Graph/Twitter cards (1200×630 image per language), JSON-LD, `robots.txt`
-  and a static `sitemap.xml` — all without extra dependencies
+- **SEO**: per-page titles/descriptions, canonical + `hreflang` pairs, Open
+  Graph/Twitter cards (1200×630 image per language), JSON-LD, `robots.txt` and a
+  static `sitemap.xml` — all without extra dependencies
 
 ## Pages
 
@@ -99,15 +99,6 @@ npm run check    # type-checks .astro files
 npm run build    # builds dist/ — 12 pages (6 × ES/EN) + 404 + sitemap
 npm run preview
 ```
-
-## Deployment (GitHub Pages)
-
-The workflow [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)
-builds and publishes on every push to `main`. In the repo: **Settings -> Pages
--> Source: GitHub Actions**.
-
-URL: `https://<username>.github.io/cv-web` (adjust `site` and `base` in
-[`astro.config.mjs`](astro.config.mjs) if you rename the repo).
 
 ## License
 
