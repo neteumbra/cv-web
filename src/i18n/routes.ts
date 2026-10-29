@@ -10,18 +10,29 @@ import { type Lang } from './dict';
  * «Cannot read properties of undefined»). Con props el frontmatter se queda
  * dentro del render y todo llega correcto.
  *
+ * **Es una fábrica, no una constante-array (Ronda 14):** Astro muta el array
+ * que devuelve `getStaticPaths` para adjuntarle su mapa de claves
+ * (`staticPaths.keyed`), y ESAS claves dependen de la ruta que las genera
+ * (`/credits` vs `/ai`, vía `route.generate`). Si las 6 páginas compartieran
+ * el mismo array (singleton del módulo), la última en construir sus claves
+ * **pisaría** el mapa de las demás → 404 intermitentes en `astro dev`
+ * («no matching static path» sin motivo aparente). Devolviendo un array nuevo
+ * en cada llamada, cada ruta guarda su propio mapa.
+ *
  * Uso en la página:
- *   export const getStaticPaths = () => STATIC_LANG_PATHS;
+ *   export const getStaticPaths = () => staticLangPaths();
  *   interface Props { lang: Lang }
  *   const { lang } = Astro.props;
  */
-export const STATIC_LANG_PATHS: {
+export function staticLangPaths(): {
   params: { lang: 'en' | undefined };
   props: { lang: Lang };
-}[] = [
-  { params: { lang: undefined }, props: { lang: 'es' } }, // ES → /editor/
-  { params: { lang: 'en' }, props: { lang: 'en' } }, //     EN → /en/editor/
-];
+}[] {
+  return [
+    { params: { lang: undefined }, props: { lang: 'es' } }, // ES → /editor/
+    { params: { lang: 'en' }, props: { lang: 'en' } }, //     EN → /en/editor/
+  ];
+}
 
 const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
 

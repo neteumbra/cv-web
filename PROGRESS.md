@@ -6,10 +6,10 @@ queda y qué está bloqueado. Lee también [`AGENTS.md`](AGENTS.md) para las reg
 **Leyenda:** ✅ hecho · 🚧 en curso · ⏳ pendiente · ⛔ bloqueado
 
 **Estado global:** tanda 1 cerrada — Rondas 1–10 en el commit `d970062`, tanda 2
-(Ronda 11) en `f1ce664`. **Tanda 3 (calidad + deploy) cerrada: Rondas 12 y 13 en
-el commit único de cierre de esta tanda.** Falta el **push a `main` por parte del
-usuario** (el deploy lo dispara el workflow `.github/workflows/deploy.yml` sobre
-ese push).
+(Ronda 11) en `f1ce664`. **Tanda 3 (calidad + deploy) cerrada: Rondas 12 y 13,
+más el fix de la Ronda 14, en los dos commits de cierre** (ver `git log`).
+Falta el **push a `main` por parte del usuario** (el deploy lo dispara el
+workflow `.github/workflows/deploy.yml` sobre ese push).
 
 ---
 
@@ -30,6 +30,7 @@ ese push).
 | 11 | i18n desde dict + navbar/copy/botones | ✅ | Fin del texto muerto en HTML: todo sale de `dict.ts` (`src/i18n/server.ts`); píldora de navbar sin barra inferior; GPL sólo en `/credits`; `.btn` rediseñado (primario azul de acento) |
 | 12 | Bug del botón + copy + estética | ✅ | `.prose a:not(.btn)` (el estilo de enlace le ganaba al botón de Ko-fi); componente `DonateButton.astro`; `/credits` y `/privacy` reescritos (asertivos) + FAQ numerada y JSON-LD `FAQPage` |
 | 13 | SEO "CV ATS" + i18n por rutas + deploy | ✅ | ES en raíz + `/en/` (12 páginas), metadatos por página, OG image por idioma, robots/sitemap/404, copy con keyword "crear CV ATS gratis"; idioma en `Astro.props` (bug de Astro 5.18 con `Astro.params`) |
+| 14 | Fix: 404 intermitentes en `astro dev` | ✅ | `staticLangPaths()` es ahora una **fábrica**: Astro muta el array de `getStaticPaths` con un mapa de claves por ruta, y el array singleton compartido por las 6 páginas hacía que la última en construir sus claves pisara las demás → `no matching static path` |
 
 **Tarea de donaciones (petición del usuario) — RESUELTA en la Ronda 10:**
 
@@ -56,6 +57,63 @@ La petición original era migrar todos los enlaces a
 ---
 
 ## Registro
+
+### 2026-10-29 · Ronda 14 — Fix: 404 intermitentes en `astro dev` ✅
+
+**Petición del usuario:** «Hay que verificar bien» — pegó el log de `astro dev`
+con rutas que pasaban de `[200]` a `[404]` sin motivo (`A getStaticPaths()
+route pattern was matched, but no matching static path was found`), a veces
+después de navegar y otras tras guardar ficheros.
+
+**Diagnóstico (instrumentación de Astro en local, sin tocar código del repo)**
+
+Parche temporal de `node_modules/astro/dist/core/render/route-cache.js` con
+`console.log` en `callGetStaticPaths` y `findPathItemByKey` (restaurado después
+desde `/tmp/opencode/route-cache.js.bak`). El log destapó la causa:
+
+```
+[DBG] BUILD /[...lang]/credits arrayId=83tz6 keys= ['/credits','/en/credits']
+[DBG] BUILD /[...lang]/ai      arrayId=83tz6 keys= ['/ai','/en/ai']
+[DBG] LOOKUP /[...lang]/credits want='/credits' have=['/ai','/en/ai'] MISS → 404
+```
+
+- `arrayId` **idéntico en las 6 páginas**: `getStaticPaths` devolvía el
+  **mismo array** (`STATIC_LANG_PATHS`, singleton del módulo `routes.ts`).
+- Astro **muta** el array devuelto para adjuntarle `staticPaths.keyed`, un
+  `Map` cuyas claves son `route.generate(params)` — y `generate` **depende de
+  la ruta** (`/credits` vs `/ai` vs `/`).
+- La **última página en construir sus claves pisaba el mapa compartido**: las
+  demás rutas buscaban su clave en un mapa ajeno → `MISS` → 404. Flaky por
+  definición: dependía del orden de peticiones/ediciones (por eso en el log del
+  usuario `/ai/` seguía en 200 y `/credits/` caía a 404).
+- El build de producción no lo delataba porque genera ruta a ruta de forma
+  secuencial (construye → busca → genera antes de que la siguiente pise el
+  mapa), pero era el mismo bomba de relojería.
+
+**Solución**
+
+| Fichero | Qué |
+| --- | --- |
+| `src/i18n/routes.ts` | `STATIC_LANG_PATHS` (array constante) → **`staticLangPaths()`, fábrica** que devuelve un array **nuevo en cada llamada**; comentario que documenta el bug |
+| `src/pages/[...lang]/*.astro` (6) | `getStaticPaths = () => staticLangPaths()` (antes `() => STATIC_LANG_PATHS`) |
+| `AGENTS.md` | regla 2: «siempre la fábrica, nunca un array importado» + el porqué |
+| `PROGRESS.md` | esta entrada + fila 14 del plan |
+
+**Verificación**
+
+- **Reproducción inicial (antes del fix):** con el dev server limpio, las 12
+  rutas daban 404 de forma aleatoria (`/` y `/editor/` 404 en el primer
+  barrido; `/credits/` 200 y a la tercera petición 404) — coincide con el log
+  del usuario.
+- **Tras el fix:** `npm run dev` → **12/12 × 3 rondas seguidas = 36 peticiones
+  200, 0 `[WARN]` y 0 `[404]`** en el log.
+- **Escenario del usuario (HMR):** `touch` de `routes.ts` + 3 páginas → el
+  proceso sigue vivo (mismo PID) y **12/12 OK** tras el reinicio caliente.
+- `npm run check` → **0/0/0**; `npm run build` → **13 páginas** con los 12
+  HTML en su sitio (ES y EN).
+- Capturas CDP de las **12 rutas + 404** (build nuevo) → títulos correctos y
+  **0 errores de consola**; test de persistencia idioma **8/8 TODO OK**.
+- `node_modules` restaurado: 0 rastros del parche de depuración.
 
 ### 2026-10-28 · Ronda 13 — SEO "CV ATS", i18n por rutas y SEO técnico ✅
 

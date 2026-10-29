@@ -74,7 +74,9 @@ docs/
 2. **i18n:** toda cadena visible va en `src/i18n/dict.ts` con clave `es` y `en`, y se escribe
    con `t(clave, lang)`. **Ya no hay `data-i18n` ni traducción en cliente**: el idioma lo
    decide la ruta, así que el HTML sale traducido del build. Para añadir una página: mueve la
-   ruta a `src/pages/[...lang]/`, exporta `getStaticPaths = () => STATIC_LANG_PATHS`,
+   ruta a `src/pages/[...lang]/`, exporta `getStaticPaths = () => staticLangPaths()`
+   (**siempre la fábrica, nunca un array importado**: Astro muta el array con un mapa de
+   claves propias de la ruta y compartirlo entre páginas provoca 404 intermitentes en dev),
    declara `interface Props { lang: Lang }` y lee `Astro.props` (**no** `Astro.params`:
    el compilador de Astro 5.18 extrae el frontmatter a top-level y ahí params es `undefined`).
 3. **Fuente única del formato:** `docs/formato-cv.md` y `docs/formato-cv.en.md`. Si cambia el
