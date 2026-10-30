@@ -1,32 +1,32 @@
 {
-  "name": "cv-web",
-  "type": "module",
-  "version": "0.1.0",
-  "license": "GPL-3.0",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "check": "astro check"
-  },
-  "dependencies": {
-    "@astrojs/react": "^4.2.1",
-    "@codemirror/lang-markdown": "^6.3.2",
-    "@codemirror/state": "^6.5.1",
-    "@codemirror/theme-one-dark": "^6.1.2",
-    "@codemirror/view": "^6.36.2",
-    "@nanostores/react": "^2.0.1",
-    "@react-pdf/renderer": "^4.3.0",
-    "astro": "^5.5.2",
-    "nanostores": "^1.5.5",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "yaml": "^2.7.0"
-  },
-  "devDependencies": {
-    "@astrojs/check": "^0.9.12",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "typescript": "^5.7.3"
-  }
+	"name": "cv-web",
+	"type": "module",
+	"version": "0.1.0",
+	"license": "GPL-3.0",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"check": "astro check"
+	},
+	"dependencies": {
+		"@astrojs/react": "^4.2.1",
+		"@codemirror/lang-markdown": "^6.3.2",
+		"@codemirror/state": "^6.5.1",
+		"@codemirror/theme-one-dark": "^6.1.2",
+		"@codemirror/view": "^6.36.2",
+		"@nanostores/react": "^2.0.1",
+		"@react-pdf/renderer": "^4.3.0",
+		"astro": "^5.5.2",
+		"nanostores": "^1.5.5",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
+		"yaml": "^2.7.0"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.12",
+		"@types/react": "^19.0.10",
+		"@types/react-dom": "^19.0.4",
+		"typescript": "^5.7.3"
+	}
 }

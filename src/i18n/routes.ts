@@ -25,18 +25,18 @@ import { type Lang } from './dict';
  *   const { lang } = Astro.props;
  */
 export function staticLangPaths(): {
-  params: { lang: 'en' | undefined };
-  props: { lang: Lang };
+	params: { lang: 'en' | undefined };
+	props: { lang: Lang };
 }[] {
-  return [
-    { params: { lang: undefined }, props: { lang: 'es' } }, // ES → /editor/
-    { params: { lang: 'en' }, props: { lang: 'en' } }, //     EN → /en/editor/
-  ];
+	return [
+		{ params: { lang: undefined }, props: { lang: 'es' } }, // ES → /editor/
+		{ params: { lang: 'en' }, props: { lang: 'en' } }, //     EN → /en/editor/
+	];
 }
 
 const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
 
 /** Enlace a una página del sitio en un idioma concreto. */
 export function pageHref(lang: Lang, path: string): string {
-  return lang === 'en' ? `${base}/en${path}` : `${base}${path}`;
+	return lang === 'en' ? `${base}/en${path}` : `${base}${path}`;
 }

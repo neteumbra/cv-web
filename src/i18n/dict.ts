@@ -23,12 +23,18 @@ export const dict = {
 		es: 'Formato del CV (Markdown) — especificación | cv-web',
 		en: 'CV format (Markdown) — specification | cv-web',
 	},
-	'meta.title.credits': { es: 'Créditos y licencia — cv-web', en: 'Credits and license — cv-web' },
+	'meta.title.credits': {
+		es: 'Créditos y licencia — cv-web',
+		en: 'Credits and license — cv-web',
+	},
 	'meta.title.privacy': {
 		es: 'Privacidad: tu CV no sale de tu navegador | cv-web',
 		en: 'Privacy: your CV never leaves your browser | cv-web',
 	},
-	'meta.title.404': { es: 'Página no encontrada — cv-web', en: 'Page not found — cv-web' },
+	'meta.title.404': {
+		es: 'Página no encontrada — cv-web',
+		en: 'Page not found — cv-web',
+	},
 	'notfound.title': { es: 'Página no encontrada', en: 'Page not found' },
 	'notfound.lead': {
 		es: 'Esta URL no existe. Puede que la hayas escrito a mano o que un enlace viejo te haya traído hasta aquí.',
@@ -93,7 +99,10 @@ export const dict = {
 		es: 'Un CV es dato personal: teléfono, correo, dirección, trayectoria. Aquí te explicamos, sin rodeos, exactamente qué ocurre con el tuyo.',
 		en: 'A CV is personal data: phone, email, address, work history. Here is, in plain words, exactly what happens to yours.',
 	},
-	'privacy.summary.title': { es: 'La respuesta corta', en: 'The short answer' },
+	'privacy.summary.title': {
+		es: 'La respuesta corta',
+		en: 'The short answer',
+	},
 	'privacy.summary.body': {
 		es: 'Tu CV nunca sale de tu navegador. No hay cuentas, ni cookies de rastreo, ni analíticas, ni servidores donde se guarde nada: escribes en tu equipo y el PDF se genera en tu equipo.',
 		en: 'Your CV never leaves your browser. No accounts, no tracking cookies, no analytics, no servers storing anything: you type on your machine and the PDF is built on your machine.',
@@ -175,7 +184,10 @@ export const dict = {
 		en: 'Write on the left and watch the PDF render on the right. You get a single-column document with selectable text: the format automated screeners read without noise. Everything in your browser, no account, nothing uploaded.',
 	},
 	'landing.cta': { es: 'Empezar mi CV', en: 'Start my CV' },
-	'landing.badge': { es: 'Software libre · Sin registros', en: 'Free software · No sign-up' },
+	'landing.badge': {
+		es: 'Software libre · Sin registros',
+		en: 'Free software · No sign-up',
+	},
 	'landing.cta.ai': {
 		es: '¿Tienes un CV antiguo? Pídele a una IA que lo convierta',
 		en: 'Have an old CV? Have an AI convert it',
@@ -183,12 +195,14 @@ export const dict = {
 
 	// Bloque "por qué este formato" — honestidad primero: no certificamos
 	// ningún ATS concreto; explicamos las decisiones de formato que sí controlamos.
-	'landing.ats.title': { es: 'Por qué este formato le sienta bien a un ATS', en: 'Why this format works well for an ATS' },
-	'landing.ats.note': {
-		es: 'No certificamos compatibilidad con ningún ATS concreto: nadie puede prometer eso de forma honesta. Lo que sí hacemos es cada decisión de formato que los lectores automáticos agradecen, y te la explicamos aquí.',
-		en: 'We do not certify compatibility with any specific ATS: nobody can honestly promise that. What we do is every formatting decision that automated readers like, and we explain each one here.',
+	'landing.ats.title': {
+		es: 'Por qué este formato le sienta bien a un ATS',
+		en: 'Why this format works well for an ATS',
 	},
-	'landing.ats.1.title': { es: 'Texto real, seleccionable', en: 'Real, selectable text' },
+	'landing.ats.1.title': {
+		es: 'Texto real, seleccionable',
+		en: 'Real, selectable text',
+	},
 	'landing.ats.1.body': {
 		es: 'El PDF se genera con texto, no con una imagen de la página: se puede seleccionar, copiar y buscar. Un extractor automático lee el contenido en lugar de adivinarlo.',
 		en: 'The PDF is built from text, not from a picture of the page: it can be selected, copied and searched. An automated extractor reads the content instead of guessing it.',
@@ -198,7 +212,10 @@ export const dict = {
 		es: 'Sin tablas, cajas ni dos columnas: cada dato va en su línea, en el orden en que se lee. Nada de que el extractor lea «nombre» y «teléfono» pegados.',
 		en: 'No tables, boxes or two columns: every field on its own line, in reading order. No extractor reading your name and phone number jammed together.',
 	},
-	'landing.ats.3.title': { es: 'Encabezados y fechas estándar', en: 'Standard headings and dates' },
+	'landing.ats.3.title': {
+		es: 'Encabezados y fechas estándar',
+		en: 'Standard headings and dates',
+	},
 	'landing.ats.3.body': {
 		es: 'Secciones con títulos reconocibles (EXPERIENCIA, FORMACIÓN, HABILIDADES) y fechas en un formato legible, para que la clasificación acierte más a la primera.',
 		en: 'Sections with recognizable headings (EXPERIENCE, EDUCATION, SKILLS) and dates in a readable format, so classification lands right the first time.',
@@ -310,7 +327,10 @@ export const dict = {
 		es: 'GPL-3.0. Puedes usarlo, copiarlo, modificarlo y redistribuirlo, siempre que mantengas la misma licencia y no borres los créditos.',
 		en: 'GPL-3.0. You may use, copy, modify and redistribute it, as long as you keep the same license and keep the credits.',
 	},
-	'credits.support.label': { es: '¿Te ha servido?', en: 'Did this help you?' },
+	'credits.support.label': {
+		es: '¿Te ha servido?',
+		en: 'Did this help you?',
+	},
 	'credits.support.body': {
 		es: 'No hay anuncios, ni cuentas de pago, ni funciones tras una suscripción: sólo este editor, y es gratis. Si te ha servido, puedes invítame a un café ☕.',
 		en: 'No ads, no paid accounts, no features behind a subscription: just this editor, and it is free. If it helped you, you can buy me a coffee ☕.',

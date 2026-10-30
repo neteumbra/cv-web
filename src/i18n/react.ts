@@ -9,11 +9,11 @@ import { dict, type DictKey, type Lang } from './dict';
 
 /** Idioma de la página (el de la URL, fijado en el build). */
 export function useLang(): Lang {
-  return useStore($lang);
+	return useStore($lang);
 }
 
 /** Traductor tipado: `t('tb.pdf')` compila; `t('tb.noexiste')`, no. */
 export function useT(): (key: DictKey) => string {
-  const lang = useStore($lang);
-  return (key) => dict[key][lang];
+	const lang = useStore($lang);
+	return (key) => dict[key][lang];
 }

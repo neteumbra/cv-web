@@ -9,7 +9,7 @@ import { CV_TOAST, emitToast } from './events';
  * viejo truco de `window.cvToast`).
  */
 export function toast(text: string, tone: 'ok' | 'error' = 'ok'): void {
-  emitToast({ text, tone });
+	emitToast({ text, tone });
 }
 
 /**
@@ -17,21 +17,25 @@ export function toast(text: string, tone: 'ok' | 'error' = 'ok'): void {
  * Se llama una sola vez desde el script de Layout.astro.
  */
 export function initToasts(): void {
-  const toastEl = document.getElementById('toast');
-  if (!toastEl) return;
-  let timer: number | undefined;
+	const toastEl = document.getElementById('toast');
+	if (!toastEl) return;
+	let timer: number | undefined;
 
-  const show = (text: string, tone: 'ok' | 'error' = 'ok') => {
-    if (!text) return;
-    toastEl.textContent = text;
-    toastEl.dataset.tone = tone;
-    toastEl.classList.add('is-visible');
-    window.clearTimeout(timer);
-    timer = window.setTimeout(() => toastEl.classList.remove('is-visible'), 2600);
-  };
+	const show = (text: string, tone: 'ok' | 'error' = 'ok') => {
+		if (!text) return;
+		toastEl.textContent = text;
+		toastEl.dataset.tone = tone;
+		toastEl.classList.add('is-visible');
+		window.clearTimeout(timer);
+		timer = window.setTimeout(
+			() => toastEl.classList.remove('is-visible'),
+			2600,
+		);
+	};
 
-  window.addEventListener(CV_TOAST, (e) => {
-    const detail = (e as CustomEvent<{ text?: string; tone?: string }>).detail;
-    show(detail?.text ?? '', detail?.tone === 'error' ? 'error' : 'ok');
-  });
+	window.addEventListener(CV_TOAST, (e) => {
+		const detail = (e as CustomEvent<{ text?: string; tone?: string }>)
+			.detail;
+		show(detail?.text ?? '', detail?.tone === 'error' ? 'error' : 'ok');
+	});
 }

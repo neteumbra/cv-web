@@ -1,180 +1,242 @@
 /* Landing: hero, CTAs y mock animado (escribe → renderiza).
    Extraído sin cambios de Layout.astro (<style is:global>), Ronda 5. */
-  /* ============================================================
+/* ============================================================
      Landing (single screen)
      ============================================================ */
-  .hero-page {
-    min-height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 24px;
-  }
-  .hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    max-width: 760px;
-    width: 100%;
-  }
-  .hero h1 {
-    font-size: clamp(30px, 5vw, 44px);
-    margin: 18px 0 14px;
-    letter-spacing: -0.02em;
-    background: linear-gradient(180deg, #ffffff 20%, #b6c2cf 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .hero .lead {
-    font-size: 16.5px;
-    color: var(--muted);
-    max-width: 620px;
-    margin: 0 auto 26px;
-  }
-  .actions {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    max-width: 100%;
-  }
+.hero-page {
+	min-height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 40px 24px;
+}
+.hero {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	max-width: 760px;
+	width: 100%;
+}
+.hero h1 {
+	font-size: clamp(30px, 5vw, 44px);
+	margin: 18px 0 14px;
+	letter-spacing: -0.02em;
+	background: linear-gradient(180deg, #ffffff 20%, #b6c2cf 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+.hero .lead {
+	font-size: 16.5px;
+	color: var(--muted);
+	max-width: 620px;
+	margin: 0 auto 26px;
+}
+.actions {
+	display: flex;
+	gap: 12px;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	max-width: 100%;
+}
 
-  .badge {
-    display: inline-block;
-    background: var(--accent-soft);
-    color: var(--accent-2);
-    border: 1px solid rgba(47, 129, 247, 0.4);
-    border-radius: 999px;
-    padding: 3px 11px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.2px;
-  }
+.badge {
+	display: inline-block;
+	background: var(--accent-soft);
+	color: var(--accent-2);
+	border: 1px solid rgba(47, 129, 247, 0.4);
+	border-radius: 999px;
+	padding: 3px 11px;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.2px;
+}
 
-  /* Decorative mock of the editor split */
-  .mock {
-    width: min(660px, 100%);
-    margin-top: 42px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    text-align: left;
-    /* Constantes de la secuencia "escribe → renderiza" */
-    --step: 0.24s; /* cadencia entre líneas */
-    --type: 0.18s; /* duración del wipe de cada línea */
-    --render: 1.6s; /* cuándo empieza a renderizarse la hoja */
-    --render-step: 0.14s; /* cadencia de los elementos de la hoja */
-  }
-  .mock-bar {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    background: var(--panel-2);
-    border-bottom: 1px solid var(--border);
-  }
-  .mock-bar span { width: 9px; height: 9px; border-radius: 50%; background: var(--border); }
-  .mock-bar em {
-    margin-left: 8px;
-    font-style: normal;
-    font-family: var(--mono);
-    font-size: 11.5px;
-    color: var(--muted);
-  }
-  .mock-body { display: grid; grid-template-columns: 1fr 1fr; min-height: 168px; }
-  .mock-code {
-    margin: 0;
-    padding: 14px 16px;
-    border-right: 1px solid var(--border);
-    font-family: var(--mono);
-    font-size: 11.5px;
-    line-height: 1.65;
-    color: var(--muted);
-    overflow: hidden;
-  }
-  /* Cada línea es un bloque para poder revelarla por separado */
-  .mock-code .ln { display: block; }
-  .mock-code .ln:empty { height: 1.65em; } /* la línea en blanco sí ocupa su hueco */
-  .mock-page {
-    background: var(--bg-deep);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-  }
-  .mock-sheet {
-    background: #fff;
-    width: 100%;
-    max-width: 132px;
-    aspect-ratio: 1 / 1.414;
-    border-radius: 3px;
-    box-shadow: var(--shadow);
-    padding: 13px 11px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  .mock-sheet b { font-size: 9px; color: #1f2328; font-family: var(--font); margin-bottom: 3px; }
-  .mock-sheet u {
-    text-decoration: none;
-    font-size: 7px;
-    letter-spacing: 0.1em;
-    color: #57606a;
-    font-weight: 700;
-    margin-top: 7px;
-  }
-  .mock-sheet i { display: block; height: 4px; background: #d0d7de; border-radius: 2px; }
-  .mock-sheet i.short { width: 55%; }
+/* Decorative mock of the editor split */
+.mock {
+	width: min(660px, 100%);
+	margin-top: 42px;
+	background: var(--panel);
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	box-shadow: var(--shadow);
+	overflow: hidden;
+	text-align: left;
+	/* Constantes de la secuencia "escribe → renderiza" */
+	--step: 0.24s; /* cadencia entre líneas */
+	--type: 0.18s; /* duración del wipe de cada línea */
+	--render: 1.6s; /* cuándo empieza a renderizarse la hoja */
+	--render-step: 0.14s; /* cadencia de los elementos de la hoja */
+}
+.mock-bar {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 12px;
+	background: var(--panel-2);
+	border-bottom: 1px solid var(--border);
+}
+.mock-bar span {
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: var(--border);
+}
+.mock-bar em {
+	margin-left: 8px;
+	font-style: normal;
+	font-family: var(--mono);
+	font-size: 11.5px;
+	color: var(--muted);
+}
+.mock-body {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	min-height: 168px;
+}
+.mock-code {
+	margin: 0;
+	padding: 14px 16px;
+	border-right: 1px solid var(--border);
+	font-family: var(--mono);
+	font-size: 11.5px;
+	line-height: 1.65;
+	color: var(--muted);
+	overflow: hidden;
+}
+/* Cada línea es un bloque para poder revelarla por separado */
+.mock-code .ln {
+	display: block;
+}
+.mock-code .ln:empty {
+	height: 1.65em;
+} /* la línea en blanco sí ocupa su hueco */
+.mock-page {
+	background: var(--bg-deep);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 16px;
+}
+.mock-sheet {
+	background: #fff;
+	width: 100%;
+	max-width: 132px;
+	aspect-ratio: 1 / 1.414;
+	border-radius: 3px;
+	box-shadow: var(--shadow);
+	padding: 13px 11px;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+.mock-sheet b {
+	font-size: 9px;
+	color: #1f2328;
+	font-family: var(--font);
+	margin-bottom: 3px;
+}
+.mock-sheet u {
+	text-decoration: none;
+	font-size: 7px;
+	letter-spacing: 0.1em;
+	color: #57606a;
+	font-weight: 700;
+	margin-top: 7px;
+}
+.mock-sheet i {
+	display: block;
+	height: 4px;
+	background: #d0d7de;
+	border-radius: 2px;
+}
+.mock-sheet i.short {
+	width: 55%;
+}
 
-  /* ------------------------------------------------------------
+/* ------------------------------------------------------------
      Secuencia del mock: "escribe → renderiza" (bucle con .play).
      Sin .play (reduced-motion, sin JS) todo queda visible y quieto.
      ------------------------------------------------------------ */
-  /* 1) Las líneas se revelan de izquierda a derecha, una tras otra */
-  .mock.play .mock-code .ln {
-    animation: ln-type var(--type) ease-out both;
-    animation-delay: calc(var(--i) * var(--step));
-  }
-  /* 2) Cursor de fin de línea, parpadeando mientras esa línea se escribe */
-  .mock.play .mock-code .ln::after {
-    content: '';
-    display: inline-block;
-    width: 5px;
-    height: 1em;
-    margin-left: 2px;
-    background: var(--accent);
-    vertical-align: -0.15em;
-    opacity: 0;
-    animation: caret 0.42s linear forwards;
-    animation-delay: calc(var(--i) * var(--step) + var(--type));
-  }
-  /* 3) La hoja del PDF se renderiza línea a línea, en cascada */
-  .mock.play .mock-sheet > * { animation: sheet-in 0.3s ease-out both; }
-  .mock.play .mock-sheet > *:nth-child(1) { animation-delay: var(--render); }
-  .mock.play .mock-sheet > *:nth-child(2) { animation-delay: calc(var(--render) + var(--render-step) * 1); }
-  .mock.play .mock-sheet > *:nth-child(3) { animation-delay: calc(var(--render) + var(--render-step) * 2); }
-  .mock.play .mock-sheet > *:nth-child(4) { animation-delay: calc(var(--render) + var(--render-step) * 3); }
-  .mock.play .mock-sheet > *:nth-child(5) { animation-delay: calc(var(--render) + var(--render-step) * 4); }
-  .mock.play .mock-sheet > *:nth-child(6) { animation-delay: calc(var(--render) + var(--render-step) * 5); }
-  .mock.play .mock-sheet > *:nth-child(7) { animation-delay: calc(var(--render) + var(--render-step) * 6); }
+/* 1) Las líneas se revelan de izquierda a derecha, una tras otra */
+.mock.play .mock-code .ln {
+	animation: ln-type var(--type) ease-out both;
+	animation-delay: calc(var(--i) * var(--step));
+}
+/* 2) Cursor de fin de línea, parpadeando mientras esa línea se escribe */
+.mock.play .mock-code .ln::after {
+	content: '';
+	display: inline-block;
+	width: 5px;
+	height: 1em;
+	margin-left: 2px;
+	background: var(--accent);
+	vertical-align: -0.15em;
+	opacity: 0;
+	animation: caret 0.42s linear forwards;
+	animation-delay: calc(var(--i) * var(--step) + var(--type));
+}
+/* 3) La hoja del PDF se renderiza línea a línea, en cascada */
+.mock.play .mock-sheet > * {
+	animation: sheet-in 0.3s ease-out both;
+}
+.mock.play .mock-sheet > *:nth-child(1) {
+	animation-delay: var(--render);
+}
+.mock.play .mock-sheet > *:nth-child(2) {
+	animation-delay: calc(var(--render) + var(--render-step) * 1);
+}
+.mock.play .mock-sheet > *:nth-child(3) {
+	animation-delay: calc(var(--render) + var(--render-step) * 2);
+}
+.mock.play .mock-sheet > *:nth-child(4) {
+	animation-delay: calc(var(--render) + var(--render-step) * 3);
+}
+.mock.play .mock-sheet > *:nth-child(5) {
+	animation-delay: calc(var(--render) + var(--render-step) * 4);
+}
+.mock.play .mock-sheet > *:nth-child(6) {
+	animation-delay: calc(var(--render) + var(--render-step) * 5);
+}
+.mock.play .mock-sheet > *:nth-child(7) {
+	animation-delay: calc(var(--render) + var(--render-step) * 6);
+}
 
-  @keyframes ln-type {
-    from { clip-path: inset(0 100% 0 0); }
-    to { clip-path: inset(0 0 0 0); }
-  }
-  @keyframes caret {
-    0%, 24.9% { opacity: 1; }
-    25%, 49.9% { opacity: 0; }
-    50%, 74.9% { opacity: 1; }
-    75%, 100% { opacity: 0; }
-  }
-  @keyframes sheet-in {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: none; }
-  }
-
+@keyframes ln-type {
+	from {
+		clip-path: inset(0 100% 0 0);
+	}
+	to {
+		clip-path: inset(0 0 0 0);
+	}
+}
+@keyframes caret {
+	0%,
+	24.9% {
+		opacity: 1;
+	}
+	25%,
+	49.9% {
+		opacity: 0;
+	}
+	50%,
+	74.9% {
+		opacity: 1;
+	}
+	75%,
+	100% {
+		opacity: 0;
+	}
+}
+@keyframes sheet-in {
+	from {
+		opacity: 0;
+		transform: translateY(5px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}

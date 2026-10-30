@@ -8,9 +8,10 @@ import { dict, type DictKey, type Lang } from './dict';
  * navega a la otra URL (el CV se mantiene, vive en `localStorage`).
  */
 export function pageLang(): Lang {
-  return typeof document !== 'undefined' && document.documentElement.lang === 'en'
-    ? 'en'
-    : 'es';
+	return typeof document !== 'undefined' &&
+		document.documentElement.lang === 'en'
+		? 'en'
+		: 'es';
 }
 
 /**
@@ -21,5 +22,5 @@ export const $lang = atom<Lang>(pageLang());
 
 /** Traducción de una clave válida del diccionario. */
 export function t(key: DictKey, lang: Lang): string {
-  return dict[key][lang];
+	return dict[key][lang];
 }

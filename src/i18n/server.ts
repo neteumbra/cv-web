@@ -9,5 +9,5 @@ import { dict, type DictKey, type Lang } from './dict';
  * reescribir en el navegador.
  */
 export function t(key: DictKey, lang: Lang): string {
-  return dict[key][lang];
+	return dict[key][lang];
 }

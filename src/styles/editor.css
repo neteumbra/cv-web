@@ -1,109 +1,150 @@
 /* Editor: toolbar, workspace, pestañas y vista previa del PDF.
    Extraído sin cambios de Layout.astro (<style is:global>), Ronda 5. */
-  /* ============================================================
+/* ============================================================
      Editor: toolbar + workspace
      ============================================================ */
-  .editor-wrap { height: 100%; display: flex; flex-direction: column; min-height: 0; }
+.editor-wrap {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+}
 
-  .toolbar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    background: var(--panel);
-    border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-  }
-  .tb-group { display: flex; align-items: center; gap: 6px; }
-  .tb-sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
-  .tb-status {
-    margin-left: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 4px 11px;
-    border-radius: 999px;
-    border: 1px solid rgba(63, 185, 80, 0.3);
-    background: var(--green-soft);
-    color: var(--green-text);
-    font-size: 12px;
-    font-weight: 600;
-    white-space: nowrap;
-  }
-  .tb-status .dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--green-text);
-    box-shadow: 0 0 0 3px rgba(63, 185, 80, 0.18);
-  }
+.toolbar {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	background: var(--panel);
+	border-bottom: 1px solid var(--border);
+	flex-wrap: wrap;
+}
+.tb-group {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+.tb-sep {
+	width: 1px;
+	height: 20px;
+	background: var(--border);
+	margin: 0 4px;
+}
+.tb-status {
+	margin-left: auto;
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	padding: 4px 11px;
+	border-radius: 999px;
+	border: 1px solid rgba(63, 185, 80, 0.3);
+	background: var(--green-soft);
+	color: var(--green-text);
+	font-size: 12px;
+	font-weight: 600;
+	white-space: nowrap;
+}
+.tb-status .dot {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: var(--green-text);
+	box-shadow: 0 0 0 3px rgba(63, 185, 80, 0.18);
+}
 
-  .workspace {
-    flex: 1 1 auto;
-    min-height: 0;
-    height: 100%;
-    display: grid;
-    grid-template-columns: var(--split, 50%) 7px minmax(0, 1fr);
-    grid-template-rows: 1fr;
-  }
-  .pane { min-width: 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column; grid-row: 1; }
-  .pane-md { grid-column: 1; }
-  .pane-pdf { grid-column: 3; }
+.workspace {
+	flex: 1 1 auto;
+	min-height: 0;
+	height: 100%;
+	display: grid;
+	grid-template-columns: var(--split, 50%) 7px minmax(0, 1fr);
+	grid-template-rows: 1fr;
+}
+.pane {
+	min-width: 0;
+	min-height: 0;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	grid-row: 1;
+}
+.pane-md {
+	grid-column: 1;
+}
+.pane-pdf {
+	grid-column: 3;
+}
 
-  .divider {
-    grid-column: 2;
-    grid-row: 1;
-    position: relative;
-    background: var(--border-soft);
-    cursor: col-resize;
-    touch-action: none;
-    border: 0;
-    padding: 0;
-    transition: background 0.15s;
-  }
-  .divider::after { content: ''; position: absolute; inset: 0 -3px; }
-  .divider:hover, .divider.is-dragging { background: var(--accent); }
-  .divider:focus-visible { outline: none; background: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.divider {
+	grid-column: 2;
+	grid-row: 1;
+	position: relative;
+	background: var(--border-soft);
+	cursor: col-resize;
+	touch-action: none;
+	border: 0;
+	padding: 0;
+	transition: background 0.15s;
+}
+.divider::after {
+	content: '';
+	position: absolute;
+	inset: 0 -3px;
+}
+.divider:hover,
+.divider.is-dragging {
+	background: var(--accent);
+}
+.divider:focus-visible {
+	outline: none;
+	background: var(--accent);
+	box-shadow: 0 0 0 2px var(--accent-soft);
+}
 
-  .wtabs { display: none; }
+.wtabs {
+	display: none;
+}
 
-  /* ============================================================
+/* ============================================================
      PDF preview
      ============================================================ */
-  .preview {
-    flex: 1 1 auto;
-    min-height: 0;
-    display: flex;
-    padding: 18px;
-    background:
-      radial-gradient(circle at 50% -10%, rgba(47, 129, 247, 0.07), transparent 55%),
-      var(--bg-deep);
-  }
-  .preview-frame {
-    flex: 1;
-    min-width: 0;
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-  }
-  .preview-empty {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    background: var(--bg-deep);
-  }
-  .preview-empty p {
-    margin: 0;
-    padding: 14px 20px;
-    border: 1px dashed var(--border);
-    border-radius: var(--radius);
-    color: var(--muted);
-    font-size: 13px;
-    text-align: center;
-  }
-
+.preview {
+	flex: 1 1 auto;
+	min-height: 0;
+	display: flex;
+	padding: 18px;
+	background:
+		radial-gradient(
+			circle at 50% -10%,
+			rgba(47, 129, 247, 0.07),
+			transparent 55%
+		),
+		var(--bg-deep);
+}
+.preview-frame {
+	flex: 1;
+	min-width: 0;
+	background: #fff;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	overflow: hidden;
+	box-shadow: var(--shadow);
+}
+.preview-empty {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	background: var(--bg-deep);
+}
+.preview-empty p {
+	margin: 0;
+	padding: 14px 20px;
+	border: 1px dashed var(--border);
+	border-radius: var(--radius);
+	color: var(--muted);
+	font-size: 13px;
+	text-align: center;
+}

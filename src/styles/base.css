@@ -1,35 +1,60 @@
 /* Base: reset tipográfico, foco, selección y prefers-reduced-motion.
    Extraído sin cambios de Layout.astro (<style is:global>), Ronda 5. */
-  /* ============================================================
+/* ============================================================
      Base
      ============================================================ */
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  html { -webkit-text-size-adjust: 100%; }
+* {
+	box-sizing: border-box;
+}
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+html {
+	-webkit-text-size-adjust: 100%;
+}
 
-  body {
-    height: 100vh;
-    height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    background: var(--bg);
-    color: var(--text);
-    font: 14px/1.55 var(--font);
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
+body {
+	height: 100vh;
+	height: 100dvh;
+	display: flex;
+	flex-direction: column;
+	background: var(--bg);
+	color: var(--text);
+	font: 14px/1.55 var(--font);
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
 
-  a { color: var(--accent-2); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  h1, h2, h3 { line-height: 1.25; margin: 0 0 0.5em; letter-spacing: -0.01em; }
+a {
+	color: var(--accent-2);
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+h1,
+h2,
+h3 {
+	line-height: 1.25;
+	margin: 0 0 0.5em;
+	letter-spacing: -0.01em;
+}
 
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  ::selection { background: rgba(47, 129, 247, 0.35); }
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+::selection {
+	background: rgba(47, 129, 247, 0.35);
+}
 
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      transition-duration: 0.01ms !important;
-      animation-duration: 0.01ms !important;
-    }
-  }
-
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+	}
+}

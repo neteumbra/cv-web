@@ -11,7 +11,7 @@ export const CV_TOAST = 'cv-toast';
 export type ToastDetail = { text: string; tone?: 'ok' | 'error' };
 
 const emit = <T>(name: string, detail: T): void => {
-  window.dispatchEvent(new CustomEvent(name, { detail }));
+	window.dispatchEvent(new CustomEvent(name, { detail }));
 };
 
 export const emitToast = (detail: ToastDetail): void => emit(CV_TOAST, detail);
